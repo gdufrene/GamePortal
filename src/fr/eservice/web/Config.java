@@ -17,7 +17,7 @@ public class Config extends WebMvcConfigurerAdapter {
 	@Bean
 	public UrlBasedViewResolver urlBasedViewResolver() {
 		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-		resolver.setPrefix("views/");
+		resolver.setPrefix("/www/views/");
 		resolver.setSuffix(".jsp");
 		resolver.setViewClass(JstlView.class);
 		
@@ -29,7 +29,7 @@ public class Config extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
 			.addResourceHandler("/assets/**")
-			.addResourceLocations("www")
+			.addResourceLocations("/www/**")
 			.setCachePeriod(31556926);
 		
 	}
