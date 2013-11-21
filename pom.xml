@@ -23,9 +23,29 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.1</version>
 				<configuration>
-					<mainClass>fr.eservice.AppElevator</mainClass>
+					<mainClass>portal.TestServer</mainClass>
+					<classpathScope>test</classpathScope>
 				</configuration>
 			</plugin>
+			
+		  <plugin>
+	        <groupId>org.eclipse.jetty</groupId>
+	        <artifactId>jetty-maven-plugin</artifactId>
+	        <version>9.0.4.v20130625</version>
+	        <configuration>
+	          <webAppSourceDirectory>src/main/webapp/www</webAppSourceDirectory>
+	          <webApp>
+	            <descriptor>WEB-INF/web.xml</descriptor>
+	            <contextPath>/</contextPath>
+	          </webApp>
+	          <classesDirectory>WEB-INF/classes</classesDirectory>
+	          <scanIntervalSeconds>5</scanIntervalSeconds>
+	          <scanTargets>
+	            <scanTarget>src/</scanTarget>
+	            <scanTarget>src/restart.txt</scanTarget>
+	          </scanTargets>
+	        </configuration>
+      	  </plugin>
 		</plugins>
 	</build>
 
@@ -60,6 +80,7 @@
 			<artifactId>spring-test</artifactId>
 			<version>3.2.4.RELEASE</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
