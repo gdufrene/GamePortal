@@ -1,3 +1,6 @@
+.classpath
+.project
+
 *.class
 
 # Package Files #
@@ -8,6 +11,3 @@
 /tmp
 /WEB-INF/tmp
 /WEB-INF
-
-.classpath
-.project
