@@ -8,3 +8,6 @@
 /tmp
 /WEB-INF/tmp
 /WEB-INF
+
+.classpath
+.project
