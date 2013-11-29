@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="/views/partials/header.jsp" />
 
 <c:if test="${isDemarre == true}">
 	Joueur qui doit jouer : ${joueurCourant}
@@ -22,3 +23,4 @@
 
 
 <a href="/partie">Rafraichir la page</a> 
+<jsp:include page="/views/partials/footer.jsp" />
