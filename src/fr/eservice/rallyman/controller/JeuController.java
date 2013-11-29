@@ -52,7 +52,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		
 	}
 	
-	@RequestMapping("/partie")
+	@RequestMapping("/rallyman-partie")
 	// TODO APPELER SUR POUR CHAQUE CLIENT EN AJAX CETTE METHODE TOUTES LES 5 SECONDES
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
@@ -104,20 +104,21 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("joueurCourant", joueurCourant);
 		
-		return "partie";
+		return "rallyman/partie";
 	}
 	
+
 	protected void passerJoueurSuivant() {
 		joueurCourant = (joueurCourant % Constantes.NOMBRE_JOUEURS) + 1;
 		des.reinitialiserDes();
 	}
 	
-	@RequestMapping("/rejoindre")
+	@RequestMapping("/rallyman-rejoindre")
 	public ModelAndView simulerNouveauParticipant() {
 		UtilisateurMock utilisateur = new UtilisateurMock();
 		utilisateur.setIdentifiant(cpt++);
 		
-		ModelAndView modele = new ModelAndView("joueurAjoute");
+		ModelAndView modele = new ModelAndView("rallyman/joueurAjoute");
 		
 		boolean resultat = false;
 		try {

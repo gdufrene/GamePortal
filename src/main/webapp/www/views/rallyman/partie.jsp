@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<jsp:include page="/views/partials/header.jsp" />
 
 <c:if test="${isDemarre == true}">
 	Joueur qui doit jouer : ${joueurCourant}
@@ -11,10 +12,10 @@
 			Champion, c'est à toi de jouer !
 			
 			<c:forEach var="de" items="${des}">
-				<a href="/partie?action=jouer&deJoue=<c:out value="${de}" />"><c:out value="${de}" /></a>
+				<a href="/rallyman-partie?action=jouer&deJoue=<c:out value="${de}" />"><c:out value="${de}" /></a>
 			</c:forEach>			
 			
-			<a href="/partie?action=passerSonTour">Fin du tour</a>
+			<a href="/rallyman-partie?action=passerSonTour">Fin du tour</a>
 			
 		</c:when>
 		<c:otherwise>
@@ -28,6 +29,7 @@
 </c:if>
 
 
+
 <h1>Avancement des joueurs</h1>
 
 <c:forEach var="joueur" items="${joueurs}">
@@ -37,4 +39,5 @@
 </c:forEach>
 
 
-<a href="/partie">Rafraichir la page</a> 
+<a href="/rallyman-partie">Rafraichir la page</a> 
+<jsp:include page="/views/partials/footer.jsp" />
