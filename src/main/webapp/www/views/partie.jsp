@@ -7,7 +7,7 @@
 	Ton identifiant : ${sessionScope.joueur.identifiant}
 	
 	<c:choose>
-		<c:when test="{sessionScope.utilisateur.identifiant == joueurCourant}">
+		<c:when test="${sessionScope.joueur.identifiant == joueurCourant}">
 			Champion, c'est à toi de jouer !
 		</c:when>
 		<c:otherwise>

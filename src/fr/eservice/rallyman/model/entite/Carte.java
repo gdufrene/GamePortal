@@ -9,5 +9,13 @@ import java.util.List;
 public class Carte {
 
 	protected List<Cellule> listeCellules;
+
+	public List<Cellule> getListeCellules() {
+		return listeCellules;
+	}
+
+	public void setListeCellules(List<Cellule> listeCellules) {
+		this.listeCellules = listeCellules;
+	}
 	
 }

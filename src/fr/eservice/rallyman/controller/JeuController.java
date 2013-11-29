@@ -15,6 +15,7 @@ import fr.eservice.rallyman.model.Constantes;
 import fr.eservice.rallyman.model.entite.Carte;
 import fr.eservice.rallyman.model.entite.Des;
 import fr.eservice.rallyman.model.entite.Joueur;
+import fr.eservice.rallyman.model.helper.CarteHelper;
 
 /**
  * Contrôleur du jeu Rallyman
@@ -33,40 +34,31 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	
 	static int cpt = 1; // à supprimer plus tard
 	
-	public boolean ajouterParticipant(final UtilisateurMock utilisateur, ModelAndView modele) throws Exception {
-		if( ! isDemarre()) {
-			Joueur joueur = new Joueur();
-			joueur.setIdentifiant(utilisateur.getIdentifiant());
-			listeJoueurs.add(joueur);
-			
-			modele.addObject("joueur", joueur);
-			
-			System.out.println("[JEU EN PREPARATION] Actuellement " + listeJoueurs.size() + " joueurs ! ");
-			return listeJoueurs.size() == Constantes.NOMBRE_JOUEURS;
-		} else {
-			throw new Exception("Le jeu a déjà démarré !");
-		}
-	}
-	
-
 	public void demarrerJeu() {
 		System.out.println("[DEMARRAGE DU JEU]");
 		
 		isDemarre = true;
 		joueurCourant = 1;
-
+		courseCourante = 1;
+		
 		// ordre aléatoire de jeu au lancement du jeu.
 		Collections.shuffle(listeJoueurs);
 		
+		// initialiastion de la carte
+		carte = CarteHelper.initialiserCarte1();
 		
-		// TODO avertir (en AJAX ?) chaque participant que la partie va commencer
 		
 	}
 	
 	@RequestMapping("/partie")
+	// TODO APPELER SUR POUR CHAQUE CLIENT EN AJAX CETTE METHODE TOUTES LES 5 SECONDES
 	public String deroulerPartie(Model modele, @ModelAttribute Joueur joueur) {
 		
 		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
+		
+		
+		
+		
 		
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("joueurCourant", joueurCourant);
@@ -95,12 +87,19 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		return modele;
 	}
 	
-	public boolean isDemarre() {
-		return isDemarre;
-	}
-
-	public void setDemarre(boolean isDemarre) {
-		this.isDemarre = isDemarre;
+	public boolean ajouterParticipant(final UtilisateurMock utilisateur, ModelAndView modele) throws Exception {
+		if( ! isDemarre) {
+			Joueur joueur = new Joueur();
+			joueur.setIdentifiant(utilisateur.getIdentifiant());
+			listeJoueurs.add(joueur);
+			
+			modele.addObject("joueur", joueur);
+			
+			System.out.println("[JEU EN PREPARATION] Actuellement " + listeJoueurs.size() + " joueurs ! ");
+			return listeJoueurs.size() == Constantes.NOMBRE_JOUEURS;
+		} else {
+			throw new Exception("Le jeu a déjà démarré !");
+		}
 	}
 	
 	// classe "bouchon" temporaire tant qu'on relie pas à la base du portail

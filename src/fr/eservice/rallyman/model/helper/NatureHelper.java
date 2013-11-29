@@ -6,7 +6,7 @@ import java.util.Map;
 import fr.eservice.rallyman.model.Constantes;
 
 /**
- *  
+ * Helper pour les éléments nature.
  * @author rally-devteam
  */
 public class NatureHelper {
