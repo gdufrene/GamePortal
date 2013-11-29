@@ -53,16 +53,12 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	@RequestMapping("/rallyman-partie")
 	// TODO APPELER SUR POUR CHAQUE CLIENT EN AJAX CETTE METHODE TOUTES LES 5 SECONDES
 	public String deroulerPartie(Model modele, @ModelAttribute Joueur joueur) {
-		
-		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
-		
-		
-		
-		
-		
+
+		System.out.println("Le joueur " + joueur.getIdentifiant() + " à rafraichit l'état de la partie");
+
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("joueurCourant", joueurCourant);
-		
+
 		return "rallyman/partie";
 	}
 	

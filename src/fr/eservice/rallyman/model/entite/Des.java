@@ -3,7 +3,7 @@ package fr.eservice.rallyman.model.entite;
 import java.util.List;
 
 /**
- * Modélisation des dés du jeu.
+ * ModÃ©lisation des dÃ©s du jeu.
  * @author rally-devteam
  */
 public class Des {
@@ -14,8 +14,8 @@ public class Des {
 	
 	
 	/**
-	 * Supprime un dé de la liste (intervient quand un joueur a utilisé le dé durant un tour).
-	 * @param de : le nom du dé.
+	 * Supprime un dÃ© de la liste (intervient quand un joueur a utilisÃ© le dÃ© durant un tour).
+	 * @param de : le nom du dÃ©.
 	 */
 	public void supprimerDe(String de) {
 		

@@ -1,7 +1,7 @@
 package fr.eservice.rallyman.model.entite;
 
 /**
- * Mod�lisation d'une cellule.
+ * Modélisation d'une cellule.
  * @author rally-devteam
  */
 public class Cellule {
