@@ -50,7 +50,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		
 	}
 	
-	@RequestMapping("/partie")
+	@RequestMapping("/rallyman-partie")
 	// TODO APPELER SUR POUR CHAQUE CLIENT EN AJAX CETTE METHODE TOUTES LES 5 SECONDES
 	public String deroulerPartie(Model modele, @ModelAttribute Joueur joueur) {
 		
@@ -63,15 +63,15 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("joueurCourant", joueurCourant);
 		
-		return "partie";
+		return "rallyman/partie";
 	}
 	
-	@RequestMapping("/rejoindre")
+	@RequestMapping("/rallyman-rejoindre")
 	public ModelAndView simulerNouveauParticipant() {
 		UtilisateurMock utilisateur = new UtilisateurMock();
 		utilisateur.setIdentifiant(cpt++);
 		
-		ModelAndView modele = new ModelAndView("joueurAjoute");
+		ModelAndView modele = new ModelAndView("rallyman/joueurAjoute");
 		
 		boolean resultat = false;
 		try {
