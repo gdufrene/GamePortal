@@ -16,9 +16,13 @@ public class Constantes {
 	
 	
 	public static final int VOITURE_MAX_PAR_CELLULE = 2;
-	
 	public static final int NOMBRE_JOUEURS = 2;
 	
-//	public static final String JOUEUR_COURANT = "JOUEUR_COURANT";
-	
+	public static final String DE_VITESSE1  = "vitesse1";
+	public static final String DE_VITESSE2  = "vitesse2";
+	public static final String DE_VITESSE3  = "vitesse3";
+	public static final String DE_VITESSE4  = "vitesse4";
+	public static final String DE_VITESSE5  = "vitesse5";
+	public static final String DE_GAZ1 		= "gaz1";
+	public static final String DE_GAZ2 		= "gaz2";
 }

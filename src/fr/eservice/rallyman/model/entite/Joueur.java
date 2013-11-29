@@ -17,6 +17,16 @@ public class Joueur implements Serializable {
 	
 	protected int temps;
 
+	protected int avancement;
+	
+	public Joueur() {
+		super();
+		avancement = 0;
+		temps = 0;
+		voiture = new Voiture();
+		voiture.setVitesseCourante(0);
+	}
+
 	public int getIdentifiant() {
 		return identifiant;
 	}
@@ -40,5 +50,14 @@ public class Joueur implements Serializable {
 	public void setTemps(int temps) {
 		this.temps = temps;
 	}
+
+	public int getAvancement() {
+		return avancement;
+	}
+
+	public void setAvancement(int avancement) {
+		this.avancement = avancement;
+	}
+	
 	
 }
