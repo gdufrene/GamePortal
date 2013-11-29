@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"fr.eservice.portal","fr.eservice.web"})
+@ComponentScan({"fr.eservice.portal","fr.eservice.web","fr.eservice.rallyman"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Bean

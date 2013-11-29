@@ -41,10 +41,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			
 			modele.addObject("joueur", joueur);
 			
-//			 TODO : mettre en session l'identifiant de l'utilisateur pour pouvoir identifier à qui de jouer par la suite ?
-//			final HttpSession session = request.getSession();
-//			session.setAttribute("joueur", joueur);
-			
 			System.out.println("[JEU EN PREPARATION] Actuellement " + listeJoueurs.size() + " joueurs ! ");
 			return listeJoueurs.size() == Constantes.NOMBRE_JOUEURS;
 		} else {
@@ -70,9 +66,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	@RequestMapping("/partie")
 	public String deroulerPartie(Model modele, @ModelAttribute Joueur joueur) {
 		
-//		HttpSession session = request.getSession();
-		
-//		Joueur joueur = (Joueur) session.getAttribute("utilisateur");
 		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
 		
 		modele.addAttribute("isDemarre", isDemarre);
@@ -82,7 +75,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 	
 	@RequestMapping("/rejoindre")
-	// ajouter response et mettre dans la response un attribut pour identifier joueurs ?!
 	public ModelAndView simulerNouveauParticipant() {
 		UtilisateurMock utilisateur = new UtilisateurMock();
 		utilisateur.setIdentifiant(cpt++);

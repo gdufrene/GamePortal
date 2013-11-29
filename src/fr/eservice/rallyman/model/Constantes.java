@@ -17,4 +17,8 @@ public class Constantes {
 	
 	public static final int VOITURE_MAX_PAR_CELLULE = 2;
 	
+	public static final int NOMBRE_JOUEURS = 4;
+	
+//	public static final String JOUEUR_COURANT = "JOUEUR_COURANT";
+	
 }
