@@ -42,7 +42,7 @@ public class Des {
 		return listeDes;
 	}
 
-	public List<String> getListeDesDisponibles(int vitesseCourante) {
+	public List<String> getListeDesDisponibles(int vitesseCourante, Cellule cellule) {
 		
 		List<String> desDisponibles = new ArrayList<String>();
 		
@@ -50,6 +50,7 @@ public class Des {
 			desDisponibles.add(de);
 		}
 		
+		// retrait des dés selon la vitesse courante
 		switch(vitesseCourante) {
 			case 0:
 				desDisponibles.remove(Constantes.DE_VITESSE2);
@@ -84,6 +85,22 @@ public class Des {
 				desDisponibles.remove(Constantes.DE_VITESSE1);
 				desDisponibles.remove(Constantes.DE_VITESSE2);
 				desDisponibles.remove(Constantes.DE_VITESSE3);
+				desDisponibles.remove(Constantes.DE_VITESSE5);
+			break;
+		}
+		
+		// retrait des dés si limitation de vitesse sur la cellule
+		switch(cellule.getLimitationVitesse()) {
+			case 2:
+				desDisponibles.remove(Constantes.DE_VITESSE3);
+				desDisponibles.remove(Constantes.DE_VITESSE4);
+				desDisponibles.remove(Constantes.DE_VITESSE5);
+			break;
+			case 3:
+				desDisponibles.remove(Constantes.DE_VITESSE4);
+				desDisponibles.remove(Constantes.DE_VITESSE5);
+			break;
+			case 4:
 				desDisponibles.remove(Constantes.DE_VITESSE5);
 			break;
 		}

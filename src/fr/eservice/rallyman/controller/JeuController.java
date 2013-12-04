@@ -58,7 +58,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
 		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
-
 		
 		// utilisateur en cours
 		if(joueur.getIdentifiant() == joueurCourant) {
@@ -92,15 +91,17 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				}
 			}
 			
-			modele.addAttribute("des", des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante()));
+			List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()));
 			
-			// TODO appel  passage au prochain joueur
+			if(desDisponibles != null && !desDisponibles.isEmpty()) {
+				modele.addAttribute("des", desDisponibles);
+			} else {
+				passerJoueurSuivant();
+			}
 		}
 		
-		
-		
-		
 		// transmission à la vue des informations
+		modele.addAttribute("carte", carte);
 		modele.addAttribute("joueurs", listeJoueurs);
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("joueurCourant", joueurCourant);

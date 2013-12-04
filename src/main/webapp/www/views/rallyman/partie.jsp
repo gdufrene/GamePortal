@@ -23,20 +23,39 @@
 		</c:otherwise>
 	</c:choose>
 	
+	<h2>Avancement des joueurs</h2>
+
+	<c:forEach var="joueur" items="${joueurs}">
+	
+		Joueur <c:out value="${joueur.identifiant}" /> 
+		à la cellule <c:out value="${joueur.avancement}" /> 
+		roule à la vitesse <c:out value="${joueur.voiture.vitesseCourante}" />
+		<br />
+	</c:forEach>
+	
+	<h2>Plateau de jeu</h2>
+	
+	<c:forEach var="cellule" items="${carte.listeCellules}">
+		Cellule <c:out value="${cellule.identifiant}" /> 
+		
+		- limitée à la vitesse <c:out value="${cellule.limitationVitesse}" />
+		
+		- occupée par <c:out value="${cellule.nombreVoitures}" /> voiture(s)
+		
+		<c:if test="${cellule.natureAGauche != null}">
+			- à gauche, il y a : <c:out value="${cellule.natureAGauche}" /> 
+		</c:if>
+		
+		<c:if test="${cellule.natureADroite != null}">
+			- à droite, il y a : <c:out value="${cellule.natureADroite}" /> 
+		</c:if>
+		<br />
+	</c:forEach>
+	
 </c:if>
 <c:if test="${isDemarre != true}">
 	En attente du nombre de joueurs adéquat !
 </c:if>
-
-
-
-<h1>Avancement des joueurs</h1>
-
-<c:forEach var="joueur" items="${joueurs}">
-
-	Joueur <c:out value="${joueur.identifiant}" /> à la position <c:out value="${joueur.avancement}" /> <br />
-
-</c:forEach>
 
 
 <a href="/rallyman-partie">Rafraichir la page</a> 
