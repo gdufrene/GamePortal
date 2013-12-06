@@ -12,7 +12,10 @@ public class Constantes {
 	public static final String TYPE_HERBE 	= "herbe";
 	public static final String TYPE_NEIGE 	= "neige";
 	public static final String TYPE_VILLAGE = "village";
-	public static final String TYPE_PLAN_EAU= "planEau";
+	public static final String TYPE_PLAN_EAU= "plan d'eau";
+	
+	public static final String TYPE_LIGNE_DROITE= "ligne droite";
+	public static final String TYPE_VIRAGE= "virage";
 	
 	public static final int VOITURE_MAX_PAR_CELLULE = 2;
 	public static final int NOMBRE_JOUEURS = 2;

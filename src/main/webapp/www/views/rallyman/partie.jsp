@@ -38,7 +38,13 @@
 	<h2>Plateau de jeu</h2>
 	
 	<c:forEach var="cellule" items="${carte.listeCellules}">
-		Cellule <c:out value="${cellule.identifiant}" /> 
+		<!--<c:forEach var="joueur" items="${joueurs}">
+			<c:if test="${joueur.avancement == cellule.identifiant}">
+				Jr<c:out value="${joueur.identifiant}" /> 
+			</c:if>
+		</c:forEach>-->
+
+		Cellule <c:out value="${cellule.identifiant}" />, <c:out value="${cellule.type}" />
 		
 		- limitée à la vitesse <c:out value="${cellule.limitationVitesse}" />
 		

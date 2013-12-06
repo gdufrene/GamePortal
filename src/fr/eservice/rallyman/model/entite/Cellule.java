@@ -1,5 +1,7 @@
 package fr.eservice.rallyman.model.entite;
 
+import fr.eservice.rallyman.model.Constantes;
+
 /**
  * Modélisation d'une cellule.
  * @author rally-devteam
@@ -10,16 +12,26 @@ public class Cellule {
 
 	protected int limitationVitesse;
 	
+	protected String type;
+	
 	protected String natureAGauche;
 	
 	protected String natureADroite;
 	
 	protected int nombreVoitures;
 	
-	public Cellule(int identifiant, int limitationVitesse, String natureAGauche, String natureADroite, int nombreVoitures) {
+	public Cellule(int identifiant) {
+		super();
+		this.identifiant = identifiant;
+		this.limitationVitesse = 5;
+		this.type = Constantes.TYPE_LIGNE_DROITE;
+	}
+
+	public Cellule(int identifiant, int limitationVitesse, String type, String natureAGauche, String natureADroite, int nombreVoitures) {
 		super();
 		this.identifiant = identifiant;
 		this.limitationVitesse = limitationVitesse;
+		this.type = type;
 		this.natureAGauche = natureAGauche;
 		this.natureADroite = natureADroite;
 		this.nombreVoitures = nombreVoitures;
@@ -39,6 +51,14 @@ public class Cellule {
 
 	public void setLimitationVitesse(int limitationVitesse) {
 		this.limitationVitesse = limitationVitesse;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getNatureAGauche() {
