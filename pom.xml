@@ -49,10 +49,6 @@
 		</plugins>
 	</build>
 
-
-
-
-
 	<dependencies>
 		<!-- Running dependencies -->
 		<dependency>

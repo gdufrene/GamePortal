@@ -90,23 +90,25 @@ public class Des {
 		}
 		
 		// retrait des dés si limitation de vitesse sur la cellule
-		switch(cellule.getLimitationVitesse()) {
+		if(cellule != null) {
+			switch(cellule.getLimitationVitesse()) {
 			case 2:
 				desDisponibles.remove(Constantes.DE_VITESSE3);
 				desDisponibles.remove(Constantes.DE_VITESSE4);
 				desDisponibles.remove(Constantes.DE_VITESSE5);
-			break;
+				break;
 			case 3:
 				desDisponibles.remove(Constantes.DE_VITESSE4);
 				desDisponibles.remove(Constantes.DE_VITESSE5);
-			break;
+				break;
 			case 4:
 				desDisponibles.remove(Constantes.DE_VITESSE5);
-			break;
+				break;
+			}
 		}
 		
 		// retrait des dés si la cellule suivante contient déjà deux voitures
-		if(celluleSuivante.getNombreVoitures() == 2){
+		if(celluleSuivante != null && celluleSuivante.getNombreVoitures() == 2){
 			desDisponibles.remove(Constantes.DE_VITESSE1);
 			desDisponibles.remove(Constantes.DE_VITESSE2);
 			desDisponibles.remove(Constantes.DE_VITESSE3);

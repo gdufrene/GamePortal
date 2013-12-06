@@ -25,18 +25,18 @@ public class CarteHelper {
 		
 		/*List<Cellule> listeCellules = new ArrayList<Cellule>();
 		
-		listeCellules.add(new Cellule(1, 3, TypeRoute.virage, Constantes.TYPE_FORET, null, 0));
-		listeCellules.add(new Cellule(2, 4, TypeRoute.virage, null, null, 0));
-		listeCellules.add(new Cellule(3, 4, TypeRoute.virage, null, Constantes.TYPE_PLAN_EAU, 0));
-		listeCellules.add(new Cellule(4, 3, TypeRoute.virage, null, null, 0));
-		listeCellules.add(new Cellule(6, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(7, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(8, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(9, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(10, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(11, 5, TypeRoute.ligneDroite, null, null, 0));
-		listeCellules.add(new Cellule(12, 5, TypeRoute.ligneDroite, null, null, 0));
-		
+		listeCellules.add(new Cellule(1, 3, Constantes.TYPE_FORET, null, 0));
+		listeCellules.add(new Cellule(2, 4, null, null, 0));
+		listeCellules.add(new Cellule(3, 4, null, Constantes.TYPE_PLAN_EAU, 0));
+		listeCellules.add(new Cellule(4, 3, null, null, 0));
+		listeCellules.add(new Cellule(5, 5, null, null, 0));
+		listeCellules.add(new Cellule(6, 5, null, null, 0));
+		listeCellules.add(new Cellule(7, 5, null, null, 0));
+		listeCellules.add(new Cellule(8, 5, null, null, 0));
+		listeCellules.add(new Cellule(9, 5, null, null, 0));
+		listeCellules.add(new Cellule(10, 5, null, null, 0));
+		listeCellules.add(new Cellule(11, 5, null, null, 0));
+		listeCellules.add(new Cellule(12, 5, null, null, 0));
 		
 		carte.setListeCellules(listeCellules);*/
 		carte.setListeCellules(CarteHelper.getRandomCellules(15));

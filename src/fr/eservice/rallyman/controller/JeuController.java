@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.eservice.rallyman.model.Constantes;
 import fr.eservice.rallyman.model.entite.Carte;
+import fr.eservice.rallyman.model.entite.Cellule;
 import fr.eservice.rallyman.model.entite.Des;
 import fr.eservice.rallyman.model.entite.Joueur;
 import fr.eservice.rallyman.model.helper.CarteHelper;
@@ -56,8 +57,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	@RequestMapping("/rallyman-partie")
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
-		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
-
 		if(isDemarre) {
 			// utilisateur en cours
 			if(joueur.getIdentifiant() == joueurCourant.getIdentifiant()) {
@@ -67,17 +66,11 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				} else if("jouer".equals(action)) {
 					if(deJoue != null && ! deJoue.isEmpty()) {
 						// TODO gérer les voitures sur même case
-						joueur.setAvancement(joueur.getAvancement() + 1);
-						
-						// le jour a-t-il fini sa manche ?
-						if (joueur.getAvancement() == carte.getListeCellules().size()) {
-							enregistrerFinManche(joueur);
-						} else {
-							calculerNouvelleVitesse(deJoue, joueur);
-						}
+						avancerJoueur(deJoue, joueur);
 					}
 					
 				}
+				
 				// vérification qu'il reste encore des dés
 				verifierActionPossible(modele, joueur);
 			}
@@ -94,32 +87,73 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		return "rallyman/partie";
 	}
 
-	private void verifierActionPossible(Model modele, Joueur joueur) {
-		List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), carte.getListeCellules().get(joueur.getAvancement()+1));
-		if(desDisponibles != null && !desDisponibles.isEmpty()) {
-			modele.addAttribute("des", desDisponibles);
+	/**
+	 * Avance le joueur d'une case et gère les effets de bord liés à l'avancée.
+	 * @param joueur
+	 */
+	private void avancerJoueur(String deJoue, Joueur joueur) {
+		List<Cellule> listeCellules = carte.getListeCellules();
+		
+		// si le joueur était sur une cellule
+		if(joueur.getAvancement() != -1) {
+			Cellule celluleCourante = listeCellules.get(joueur.getAvancement());
+			celluleCourante.setNombreVoitures(celluleCourante.getNombreVoitures() - 1 );
+		}
+		
+		joueur.setAvancement(joueur.getAvancement() + 1);
+		
+		if(joueur.getAvancement() < listeCellules.size()) {
+			Cellule nouvelleCellule = listeCellules.get(joueur.getAvancement());
+			nouvelleCellule.setNombreVoitures(nouvelleCellule.getNombreVoitures() + 1 );
+			
+			calculerNouvelleVitesse(deJoue, joueur);
 		} else {
+			enregistrerFinManche(joueur);
+		}
+	}
+
+	/**
+	 * Vérifie que le joueur a encore des dés pour le tour sinon c'est au joueur suivant de jouer.
+	 * @param modele
+	 * @param joueur
+	 */
+	private void verifierActionPossible(Model modele, Joueur joueur) {
+		
+		List<String> desDisponibles = null;
+		
+		if(joueur.getAvancement() == -1) {
+			desDisponibles = des.getListeDesDisponibles(0, null, null);
+		} else if(joueur.getAvancement() < carte.getListeCellules().size()) {
+			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), carte.getListeCellules().get(joueur.getAvancement()+1));
+		}
+		
+		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
 			passerJoueurSuivant(joueur);
+		} else {
+			modele.addAttribute("des", desDisponibles);
 		}
 	}
 
 	private void enregistrerFinManche(Joueur pJoueur) {
-		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + "secondes !");
-		
+		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + " secondes !");
+		pJoueur.setaFiniLaSpeciale(true);
+
 		boolean finiPourTous = true;
-		
-		// si tous les joueurs ont fini la spéciale
-		for(final Joueur joueur : listeJoueurs) {
-			if(joueur.getAvancement() != carte.getListeCellules().size()) {
+		// recherche si tous les joueurs ont fini la spéciale
+		for (final Joueur joueur : listeJoueurs) {
+			if (! joueur.isaFiniLaSpeciale()) {
 				finiPourTous = false;
 				break;
 			}
 		}
 		
+		// si tout le monde a fini la spéciale
 		if (finiPourTous) {
+			// si c'était la dernière spéciale, on clot le jeu
 			if(specialeCourante == Constantes.NOMBRE_COURSES) {
 				// fin du jeu
 				isTermine = true;
+			// sinon on démarre la nouvelle spéciale
 			} else {
 				initialiserNouvelleSpeciale();
 			}
@@ -181,7 +215,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		// on enregistre le temps passé durant le tour
 		enregistrerTempsDuTour(joueur);
 		
-		// TODO ne pas rendre la main à un utilisateur qui a déjà fini la spéciale
+		// TODO ne pas rendre la main à un utilisateur qui a déjà fini la spéciale (sinon la main revient au joueur qui a fini, 
+		// il doit refresh sa page pour re-rendre la main à l'utilisateur suivant) 
 		int index = listeJoueurs.indexOf(joueurCourant);
 		
 		if (index == (listeJoueurs.size() - 1)) {
@@ -189,14 +224,32 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		} else {
 			index++;
 		}
-		
 		joueurCourant = listeJoueurs.get(index);
-		
 		des.reinitialiserDes();
 	}
 	
-	private void enregistrerTempsDuTour(Joueur joueur) {
-		// TODO comptabiliser le temps passé sur le parcours
+	private void enregistrerTempsDuTour(final Joueur joueur) {
+
+		int tempsCourant = joueur.getTemps();
+		
+		switch(joueur.getVoiture().getVitesseCourante()) {
+			case 1:
+				joueur.setTemps(tempsCourant + Constantes.TEMPS_VITESSE1);
+			break;
+			case 2:
+				joueur.setTemps(tempsCourant + Constantes.TEMPS_VITESSE2);
+			break;
+			case 3:
+				joueur.setTemps(tempsCourant + Constantes.TEMPS_VITESSE3);
+			break;
+			case 4:
+				joueur.setTemps(tempsCourant + Constantes.TEMPS_VITESSE4);
+			break;
+			case 5:
+				joueur.setTemps(tempsCourant + Constantes.TEMPS_VITESSE5);
+			break;
+		}
+		System.out.println("Nouveau temps pour le joueur " + joueur.getIdentifiant() + " : "  + joueur.getTemps());
 		
 	}
 

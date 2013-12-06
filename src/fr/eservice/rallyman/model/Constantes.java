@@ -29,4 +29,10 @@ public class Constantes {
 	public static final String DE_GAZ1 		= "gaz1";
 	public static final String DE_GAZ2 		= "gaz2";
 	
+	public static final int TEMPS_VITESSE1 = 50;
+	public static final int TEMPS_VITESSE2 = 40;
+	public static final int TEMPS_VITESSE3 = 30;
+	public static final int TEMPS_VITESSE4 = 20;
+	public static final int TEMPS_VITESSE5 = 10;
+	
 }

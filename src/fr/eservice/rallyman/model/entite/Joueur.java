@@ -19,12 +19,15 @@ public class Joueur implements Serializable {
 
 	protected int avancement;
 	
+	protected boolean aFiniLaSpeciale;
+	
 	public Joueur() {
 		super();
-		avancement = 0;
+		avancement = -1;
 		temps = 0;
 		voiture = new Voiture();
 		voiture.setVitesseCourante(0);
+		aFiniLaSpeciale = false;
 	}
 
 	public int getIdentifiant() {
@@ -57,6 +60,14 @@ public class Joueur implements Serializable {
 
 	public void setAvancement(int avancement) {
 		this.avancement = avancement;
+	}
+
+	public boolean isaFiniLaSpeciale() {
+		return aFiniLaSpeciale;
+	}
+
+	public void setaFiniLaSpeciale(boolean aFiniLaSpeciale) {
+		this.aFiniLaSpeciale = aFiniLaSpeciale;
 	}
 	
 	
