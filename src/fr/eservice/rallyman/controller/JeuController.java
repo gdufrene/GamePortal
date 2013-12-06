@@ -31,6 +31,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected Carte carte;
 	protected int courseCourante;
 	protected boolean isDemarre = false;
+	protected boolean isTermine = false;
 	protected int joueurCourant;
 	
 	static int cpt = 1; // à supprimer plus tard
@@ -53,8 +54,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 	
 	@RequestMapping("/rallyman-partie")
-	// TODO APPELER SUR POUR CHAQUE CLIENT EN AJAX CETTE METHODE TOUTES LES 5 SECONDES
-
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
 		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
@@ -68,35 +67,16 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				if(deJoue != null && ! deJoue.isEmpty()) {
 					// TODO gérer les voitures sur même case
 					joueur.setAvancement(joueur.getAvancement() + 1);
-					int nouvelleVitesse = -1;
 					
-					if(deJoue.equals(Constantes.DE_VITESSE1)) {
-						nouvelleVitesse = 1;
-					} else if(deJoue.equals(Constantes.DE_VITESSE2)) {
-						nouvelleVitesse = 2;
-					} else if(deJoue.equals(Constantes.DE_VITESSE3)) {
-						nouvelleVitesse = 3;
-					} else if(deJoue.equals(Constantes.DE_VITESSE4)) {
-						nouvelleVitesse = 4;
-					} else if(deJoue.equals(Constantes.DE_VITESSE5)) {
-						nouvelleVitesse = 5;
-					}
-					
-					des.supprimerDe(deJoue);
-					
-					if(nouvelleVitesse != -1) {
-						joueur.getVoiture().setVitesseCourante(nouvelleVitesse);
-						System.out.println("Nouvelle vitesse du joueur " + joueur.getIdentifiant() + " : " + nouvelleVitesse);
+					// le jour a-t-il remporté la manche ?
+					if (joueur.getAvancement() == carte.getListeCellules().size()) {
+						enregistrerVictoireManche(joueur);
+					} else {
+						calculerNouvelleVitesse(deJoue, joueur);
+						// vérification qu'il reste encore des dés
+						verifierActionPossible(modele, joueur);
 					}
 				}
-			}
-			
-			List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()));
-			
-			if(desDisponibles != null && !desDisponibles.isEmpty()) {
-				modele.addAttribute("des", desDisponibles);
-			} else {
-				passerJoueurSuivant();
 			}
 		}
 		
@@ -104,9 +84,64 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		modele.addAttribute("carte", carte);
 		modele.addAttribute("joueurs", listeJoueurs);
 		modele.addAttribute("isDemarre", isDemarre);
+		modele.addAttribute("isTermine", isTermine);
 		modele.addAttribute("joueurCourant", joueurCourant);
 
 		return "rallyman/partie";
+	}
+
+	private void verifierActionPossible(Model modele, Joueur joueur) {
+		List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()));
+		if(desDisponibles != null && !desDisponibles.isEmpty()) {
+			modele.addAttribute("des", desDisponibles);
+		} else {
+			passerJoueurSuivant();
+		}
+	}
+
+	private void enregistrerVictoireManche(Joueur pJoueur) {
+		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a remporté la manche en " + pJoueur.getTemps() + "secondes !");
+		
+		if(courseCourante == Constantes.NOMBRE_COURSES) {
+			// fin du jeu
+			isTermine = true;
+		} else {
+			courseCourante++;
+			
+			// réinitialisation des dés
+			des.reinitialiserDes();
+			
+			// réinitialisation des joueurs
+			for(final Joueur joueur : listeJoueurs) {
+				joueur.setAvancement(0);
+				joueur.getVoiture().setVitesseCourante(0);
+			}
+			
+			// réinitilisation du plateau
+			carte.reinitialiser();
+		}
+	}
+
+	private void calculerNouvelleVitesse(String deJoue, Joueur joueur) {
+		int nouvelleVitesse = -1;
+		if(deJoue.equals(Constantes.DE_VITESSE1)) {
+			nouvelleVitesse = 1;
+		} else if(deJoue.equals(Constantes.DE_VITESSE2)) {
+			nouvelleVitesse = 2;
+		} else if(deJoue.equals(Constantes.DE_VITESSE3)) {
+			nouvelleVitesse = 3;
+		} else if(deJoue.equals(Constantes.DE_VITESSE4)) {
+			nouvelleVitesse = 4;
+		} else if(deJoue.equals(Constantes.DE_VITESSE5)) {
+			nouvelleVitesse = 5;
+		}
+		
+		des.supprimerDe(deJoue);
+		
+		if(nouvelleVitesse != -1) {
+			joueur.getVoiture().setVitesseCourante(nouvelleVitesse);
+			System.out.println("Nouvelle vitesse du joueur " + joueur.getIdentifiant() + " : " + nouvelleVitesse);
+		}
 	}
 	
 
