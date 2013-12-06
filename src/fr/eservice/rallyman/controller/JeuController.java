@@ -29,10 +29,10 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected List<Joueur> listeJoueurs = new ArrayList<Joueur>();
 	protected Des des;
 	protected Carte carte;
-	protected int courseCourante;
+	protected int specialeCourante;
 	protected boolean isDemarre = false;
 	protected boolean isTermine = false;
-	protected int joueurCourant;
+	protected Joueur joueurCourant;
 	
 	static int cpt = 1; // à supprimer plus tard
 	
@@ -40,11 +40,11 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		System.out.println("[DEMARRAGE DU JEU]");
 		
 		isDemarre = true;
-		joueurCourant = 1;
-		courseCourante = 1;
+		specialeCourante = 1;
 		
 		// ordre aléatoire de jeu au lancement du jeu.
 		Collections.shuffle(listeJoueurs);
+		joueurCourant = listeJoueurs.get(0);
 		
 		// initialiastion de la carte
 		carte = CarteHelper.initialiserCarte1();
@@ -57,26 +57,29 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
 		System.out.println("Le joueur " + joueur.getIdentifiant() + " a rafraichit l'état de la partie");
-		
-		// utilisateur en cours
-		if(joueur.getIdentifiant() == joueurCourant) {
-			
-			if("passerSonTour".equals(action)) {
-				passerJoueurSuivant();
-			} else if("jouer".equals(action)) {
-				if(deJoue != null && ! deJoue.isEmpty()) {
-					// TODO gérer les voitures sur même case
-					joueur.setAvancement(joueur.getAvancement() + 1);
-					
-					// le jour a-t-il remporté la manche ?
-					if (joueur.getAvancement() == carte.getListeCellules().size()) {
-						enregistrerVictoireManche(joueur);
-					} else {
-						calculerNouvelleVitesse(deJoue, joueur);
-						// vérification qu'il reste encore des dés
-						verifierActionPossible(modele, joueur);
+
+		if(isDemarre) {
+			// utilisateur en cours
+			if(joueur.getIdentifiant() == joueurCourant.getIdentifiant()) {
+				
+				if("passerSonTour".equals(action)) {
+					passerJoueurSuivant(joueur);
+				} else if("jouer".equals(action)) {
+					if(deJoue != null && ! deJoue.isEmpty()) {
+						// TODO gérer les voitures sur même case
+						joueur.setAvancement(joueur.getAvancement() + 1);
+						
+						// le jour a-t-il fini sa manche ?
+						if (joueur.getAvancement() == carte.getListeCellules().size()) {
+							enregistrerFinManche(joueur);
+						} else {
+							calculerNouvelleVitesse(deJoue, joueur);
+						}
 					}
+					
 				}
+				// vérification qu'il reste encore des dés
+				verifierActionPossible(modele, joueur);
 			}
 		}
 		
@@ -85,7 +88,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		modele.addAttribute("joueurs", listeJoueurs);
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("isTermine", isTermine);
-		modele.addAttribute("joueurCourant", joueurCourant);
+		modele.addAttribute("specialeCourante", specialeCourante);
+		modele.addAttribute("joueurCourant", joueurCourant.getIdentifiant());
 
 		return "rallyman/partie";
 	}
@@ -95,33 +99,60 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		if(desDisponibles != null && !desDisponibles.isEmpty()) {
 			modele.addAttribute("des", desDisponibles);
 		} else {
-			passerJoueurSuivant();
+			passerJoueurSuivant(joueur);
 		}
 	}
 
-	private void enregistrerVictoireManche(Joueur pJoueur) {
-		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a remporté la manche en " + pJoueur.getTemps() + "secondes !");
+	private void enregistrerFinManche(Joueur pJoueur) {
+		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + "secondes !");
 		
-		if(courseCourante == Constantes.NOMBRE_COURSES) {
-			// fin du jeu
-			isTermine = true;
-		} else {
-			courseCourante++;
-			
-			// réinitialisation des dés
-			des.reinitialiserDes();
-			
-			// réinitialisation des joueurs
-			for(final Joueur joueur : listeJoueurs) {
-				joueur.setAvancement(0);
-				joueur.getVoiture().setVitesseCourante(0);
+		boolean finiPourTous = true;
+		
+		// si tous les joueurs ont fini la spéciale
+		for(final Joueur joueur : listeJoueurs) {
+			if(joueur.getAvancement() != carte.getListeCellules().size()) {
+				finiPourTous = false;
+				break;
 			}
-			
-			// réinitilisation du plateau
-			carte.reinitialiser();
+		}
+		
+		if (finiPourTous) {
+			if(specialeCourante == Constantes.NOMBRE_COURSES) {
+				// fin du jeu
+				isTermine = true;
+			} else {
+				initialiserNouvelleSpeciale();
+			}
 		}
 	}
 
+	/**
+	 * Initialise le plateau et les joueurs pour démarrer la nouvelle spéciale.
+	 */
+	private void initialiserNouvelleSpeciale() {
+		
+		System.out.println("Démarrage d'une nouvelle spéciale !");
+		
+		specialeCourante++;
+		
+		// réinitialisation des dés
+		des.reinitialiserDes();
+		
+		// réinitialisation des joueurs
+		for(final Joueur joueur : listeJoueurs) {
+			joueur.setAvancement(0);
+			joueur.getVoiture().setVitesseCourante(0);
+		}
+		
+		// réinitilisation du plateau
+		carte.reinitialiser();
+	}
+
+	/**
+	 * Calcul de la nouvelle vitesse courante du joueur.
+	 * @param deJoue
+	 * @param joueur
+	 */
 	private void calculerNouvelleVitesse(String deJoue, Joueur joueur) {
 		int nouvelleVitesse = -1;
 		if(deJoue.equals(Constantes.DE_VITESSE1)) {
@@ -145,11 +176,30 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 	
 
-	protected void passerJoueurSuivant() {
-		joueurCourant = (joueurCourant % Constantes.NOMBRE_JOUEURS) + 1;
+	protected void passerJoueurSuivant(Joueur joueur) {
+		
+		// on enregistre le temps passé durant le tour
+		enregistrerTempsDuTour(joueur);
+		
+		// TODO ne pas rendre la main à un utilisateur qui a déjà fini la spéciale
+		int index = listeJoueurs.indexOf(joueurCourant);
+		
+		if (index == (listeJoueurs.size() - 1)) {
+			index = 0;
+		} else {
+			index++;
+		}
+		
+		joueurCourant = listeJoueurs.get(index);
+		
 		des.reinitialiserDes();
 	}
 	
+	private void enregistrerTempsDuTour(Joueur joueur) {
+		// TODO comptabiliser le temps passé sur le parcours
+		
+	}
+
 	@RequestMapping("/rallyman-rejoindre")
 	public ModelAndView simulerNouveauParticipant() {
 		UtilisateurMock utilisateur = new UtilisateurMock();

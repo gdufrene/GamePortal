@@ -23,6 +23,8 @@
 		</c:otherwise>
 	</c:choose>
 	
+	<h1>Spéciale en cours : <c:out value="${specialeCourante}" /></h1>
+	
 	<h2>Avancement des joueurs</h2>
 
 	<c:forEach var="joueur" items="${joueurs}">
