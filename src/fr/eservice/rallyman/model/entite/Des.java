@@ -42,7 +42,7 @@ public class Des {
 		return listeDes;
 	}
 
-	public List<String> getListeDesDisponibles(int vitesseCourante, Cellule cellule) {
+	public List<String> getListeDesDisponibles(int vitesseCourante, Cellule cellule, Cellule celluleSuivante) {
 		
 		List<String> desDisponibles = new ArrayList<String>();
 		
@@ -103,6 +103,17 @@ public class Des {
 			case 4:
 				desDisponibles.remove(Constantes.DE_VITESSE5);
 			break;
+		}
+		
+		// retrait des dés si la cellule suivante contient déjà deux voitures
+		if(celluleSuivante.getNombreVoitures() == 2){
+			desDisponibles.remove(Constantes.DE_VITESSE1);
+			desDisponibles.remove(Constantes.DE_VITESSE2);
+			desDisponibles.remove(Constantes.DE_VITESSE3);
+			desDisponibles.remove(Constantes.DE_VITESSE4);
+			desDisponibles.remove(Constantes.DE_VITESSE5);
+			desDisponibles.remove(Constantes.DE_GAZ1);
+			desDisponibles.remove(Constantes.DE_GAZ2);
 		}
 		
 		return desDisponibles;

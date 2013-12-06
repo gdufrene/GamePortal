@@ -95,7 +95,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 
 	private void verifierActionPossible(Model modele, Joueur joueur) {
-		List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()));
+		List<String> desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), carte.getListeCellules().get(joueur.getAvancement()+1));
 		if(desDisponibles != null && !desDisponibles.isEmpty()) {
 			modele.addAttribute("des", desDisponibles);
 		} else {
