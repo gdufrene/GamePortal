@@ -39,7 +39,7 @@ public class CarteHelper {
 		listeCellules.add(new Cellule(12, 5, null, null, 0));
 		
 		carte.setListeCellules(listeCellules);*/
-		carte.setListeCellules(CarteHelper.getRandomCellules(15));
+		carte.setListeCellules(CarteHelper.getRandomCellules(5));
 		return carte;
 	}
 	
@@ -50,7 +50,7 @@ public class CarteHelper {
 		List<Cellule> listeCellules = new ArrayList<Cellule>();
 		int dernierVirage = 0;
 		
-		for(int i = 1; i <= nombreDeCellules; i++){
+		for(int i = 0; i < nombreDeCellules; i++){
 			Cellule newCellule = new Cellule(i);
 			
 			int randomType = rand.nextInt(5); // rand.nextInt((max - min) + 1) + min;

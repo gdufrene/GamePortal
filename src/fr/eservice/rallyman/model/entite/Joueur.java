@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 
 /**
- * Mod�lisation d'un joueur du jeu.
+ * Modélisation d'un joueur du jeu.
  * @author rally-devteam
  */
-public class Joueur implements Serializable {
+public class Joueur implements Serializable, Comparable<Joueur> {
 
 	private static final long serialVersionUID = 1237704765278333747L;
 
@@ -69,6 +69,10 @@ public class Joueur implements Serializable {
 	public void setaFiniLaSpeciale(boolean aFiniLaSpeciale) {
 		this.aFiniLaSpeciale = aFiniLaSpeciale;
 	}
-	
+
+	/** {@inheritDoc} */
+	public int compareTo(Joueur pJoueur) {
+		return (this.getTemps() < pJoueur.getTemps() ? -1 : (this.getTemps() > pJoueur.getTemps() ? 1 : 0 ));
+	}
 	
 }

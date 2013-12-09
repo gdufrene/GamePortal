@@ -57,7 +57,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	@RequestMapping("/rallyman-partie")
 	public String deroulerPartie(@RequestParam(required=false) String deJoue, @RequestParam(required=false) String action, Model modele, @ModelAttribute Joueur joueur) {
 		
-		if(isDemarre) {
+		if(isDemarre && !isTermine) {
 			// utilisateur en cours
 			if(joueur.getIdentifiant() == joueurCourant.getIdentifiant()) {
 				
@@ -65,7 +65,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 					passerJoueurSuivant(joueur);
 				} else if("jouer".equals(action)) {
 					if(deJoue != null && ! deJoue.isEmpty()) {
-						// TODO gérer les voitures sur même case
 						avancerJoueur(deJoue, joueur);
 					}
 					
@@ -82,7 +81,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		modele.addAttribute("isDemarre", isDemarre);
 		modele.addAttribute("isTermine", isTermine);
 		modele.addAttribute("specialeCourante", specialeCourante);
-		modele.addAttribute("joueurCourant", joueurCourant.getIdentifiant());
+		modele.addAttribute("joueurCourant", joueurCourant);
 
 		return "rallyman/partie";
 	}
@@ -123,8 +122,16 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		
 		if(joueur.getAvancement() == -1) {
 			desDisponibles = des.getListeDesDisponibles(0, null, null);
-		} else if(joueur.getAvancement() < carte.getListeCellules().size()) {
-			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), carte.getListeCellules().get(joueur.getAvancement()+1));
+		} else if (! joueur.isaFiniLaSpeciale()) {
+			
+			Cellule celluleSuivante = null;
+			try {
+				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
+			} catch (final IndexOutOfBoundsException e){
+				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
+			}
+			
+			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
 		}
 		
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
@@ -135,8 +142,10 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 
 	private void enregistrerFinManche(Joueur pJoueur) {
-		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + " secondes !");
+		enregistrerTempsDuTour(pJoueur);
 		pJoueur.setaFiniLaSpeciale(true);
+
+		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + " secondes !");
 
 		boolean finiPourTous = true;
 		// recherche si tous les joueurs ont fini la spéciale
@@ -152,7 +161,11 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			// si c'était la dernière spéciale, on clot le jeu
 			if(specialeCourante == Constantes.NOMBRE_COURSES) {
 				// fin du jeu
+				System.out.println("Le jeu est terminé !");
 				isTermine = true;
+				
+				// on trie les joueurs par score
+				Collections.sort(listeJoueurs);
 			// sinon on démarre la nouvelle spéciale
 			} else {
 				initialiserNouvelleSpeciale();
@@ -174,7 +187,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		
 		// réinitialisation des joueurs
 		for(final Joueur joueur : listeJoueurs) {
-			joueur.setAvancement(0);
+			joueur.setaFiniLaSpeciale(false);
+			joueur.setAvancement(-1);
 			joueur.getVoiture().setVitesseCourante(0);
 		}
 		
@@ -205,29 +219,43 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		
 		if(nouvelleVitesse != -1) {
 			joueur.getVoiture().setVitesseCourante(nouvelleVitesse);
-			System.out.println("Nouvelle vitesse du joueur " + joueur.getIdentifiant() + " : " + nouvelleVitesse);
 		}
 	}
 	
-
+	
+	/**
+	 * Permet de passer au joueur suivant.
+	 * @param joueur
+	 */
 	protected void passerJoueurSuivant(Joueur joueur) {
 		
 		// on enregistre le temps passé durant le tour
-		enregistrerTempsDuTour(joueur);
-		
-		// TODO ne pas rendre la main à un utilisateur qui a déjà fini la spéciale (sinon la main revient au joueur qui a fini, 
-		// il doit refresh sa page pour re-rendre la main à l'utilisateur suivant) 
-		int index = listeJoueurs.indexOf(joueurCourant);
-		
-		if (index == (listeJoueurs.size() - 1)) {
-			index = 0;
-		} else {
-			index++;
+		if(! joueur.isaFiniLaSpeciale()) {
+			enregistrerTempsDuTour(joueur);
 		}
-		joueurCourant = listeJoueurs.get(index);
+		
+		int parcours = 0;
+		do {
+			int index = listeJoueurs.indexOf(joueurCourant);
+			
+			if (index == (listeJoueurs.size() - 1)) {
+				index = 0;
+			} else {
+				index++;
+			}
+			joueurCourant = listeJoueurs.get(index);
+			
+			System.out.println("Le nouveau joueur ( " + joueurCourant.getIdentifiant() + ") a fini la spé ? " + joueurCourant.isaFiniLaSpeciale());
+			
+		} while (joueurCourant.isaFiniLaSpeciale() &&  ++parcours != listeJoueurs.size());
+		
 		des.reinitialiserDes();
 	}
 	
+	/**
+	 * Enregistre le temps passé par le joueur sur le tour.
+	 * @param joueur
+	 */
 	private void enregistrerTempsDuTour(final Joueur joueur) {
 
 		int tempsCourant = joueur.getTemps();
@@ -274,6 +302,13 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		return modele;
 	}
 	
+	/**
+	 * Ajoute un participant au jeu.
+	 * @param utilisateur
+	 * @param modele
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean ajouterParticipant(final UtilisateurMock utilisateur, ModelAndView modele) throws Exception {
 		if( ! isDemarre) {
 			Joueur joueur = new Joueur();
