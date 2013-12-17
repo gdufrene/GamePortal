@@ -17,6 +17,13 @@
       .sidebar-nav {
         padding: 9px 0;
       }
+	  .plateau {
+	  	padding: 0;
+	  	margin: 0;
+	  }
+	  #plateau {
+	  	backgroung-color: #222222;
+	  }
 
       @media (max-width: 980px) {
         /* Enable use of floated navbar text */

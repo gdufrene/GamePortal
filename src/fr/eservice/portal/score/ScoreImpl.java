@@ -8,14 +8,12 @@ import java.util.List;
  */
 public class ScoreImpl implements IScore {
 
-	@Override
 	public void enregistrerScores(int identifiantJeu, int identifiantSession,
 			List<ScoreBean> scores) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public List<ScoreBean> recupererScores(int identifiantJeu,
 			int identifiantSession) {
 		// TODO Auto-generated method stub
