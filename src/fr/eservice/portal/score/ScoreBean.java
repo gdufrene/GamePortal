@@ -2,7 +2,6 @@ package fr.eservice.portal.score;
 
 /**
  * Classe pour contenir un score.
- * TODO : ajouter les annotations pour la persistance.
  * @author rally-devteam
  */
 public class ScoreBean {

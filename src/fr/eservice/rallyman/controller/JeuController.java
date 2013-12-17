@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.eservice.portal.score.ScoreBean;
+import fr.eservice.portal.score.ScoreService;
 import fr.eservice.rallyman.model.Constantes;
 import fr.eservice.rallyman.model.entite.Carte;
 import fr.eservice.rallyman.model.entite.Cellule;
@@ -36,7 +39,14 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected Joueur joueurCourant;
 	
 	static int cpt = 1; // à supprimer plus tard
+
+	protected ScoreService scoreService;
 	
+	@Autowired
+	public void setScoreService(ScoreService scoreService) {
+		this.scoreService = scoreService;
+	}
+
 	public void demarrerJeu() {
 		System.out.println("[DEMARRAGE DU JEU]");
 		
@@ -52,6 +62,28 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		des = new Des();
 		des.reinitialiserDes();
 		
+	}
+	
+	@RequestMapping("/test_score")
+	// permet de tester la sauvegarde des scores en bdd
+	public String test() {
+		
+		List<ScoreBean> liste = new ArrayList<ScoreBean>();
+		ScoreBean score = new ScoreBean();
+		score.setIdentifiantUtilisateur(2);
+		score.setPlacement(1);
+		score.setScore(820);
+		ScoreBean score2 = new ScoreBean();
+		score2.setIdentifiantUtilisateur(3);
+		score2.setPlacement(2);
+		score2.setScore(450);
+		
+		liste.add(score);
+		liste.add(score2);
+		
+		scoreService.sauvegarderScores(1, 2, liste);
+		
+		return "helloWorld";
 	}
 	
 	@RequestMapping("/rallyman-partie")
@@ -166,6 +198,21 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				
 				// on trie les joueurs par score
 				Collections.sort(listeJoueurs);
+				
+				List<ScoreBean> scores = new ArrayList<ScoreBean>();
+				
+				int placement = 1;
+				for(final Joueur joueur : listeJoueurs) {
+					ScoreBean score = new ScoreBean();
+					score.setIdentifiantUtilisateur(joueur.getIdentifiant());
+					score.setPlacement(placement++);
+					score.setScore(joueur.getTemps());
+					scores.add(score);
+				}
+				
+				// on sauvegarde les scores
+				scoreService.sauvegarderScores(1, 1, scores);
+				
 			// sinon on démarre la nouvelle spéciale
 			} else {
 				initialiserNouvelleSpeciale();
@@ -244,9 +291,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				index++;
 			}
 			joueurCourant = listeJoueurs.get(index);
-			
-			System.out.println("Le nouveau joueur ( " + joueurCourant.getIdentifiant() + ") a fini la spé ? " + joueurCourant.isaFiniLaSpeciale());
-			
 		} while (joueurCourant.isaFiniLaSpeciale() &&  ++parcours != listeJoueurs.size());
 		
 		des.reinitialiserDes();
