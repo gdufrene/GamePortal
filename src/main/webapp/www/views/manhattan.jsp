@@ -7,6 +7,7 @@
 </head>
 <body>
 Manhattan - Joueur 1
+<% out.print("truc"); %>
 <table width="700" height="450">
   <tr>
     <td width="33%"><table id="scores" width="100%" border="1">
@@ -268,7 +269,7 @@ Manhattan - Joueur 1
 
 <script type="text/javascript" />
 	
-	var JOUEUR = 1; // Récupérer la valeur 
+	var JOUEUR = 1; // Rï¿½cupï¿½rer la valeur 
 	var score = 0;
 	
 	function generate_carte(value) {
@@ -315,7 +316,7 @@ Manhattan - Joueur 1
 		}
 	}
 	
-	function init_cartes() { // récupérer les valeurs 
+	function init_cartes() { // rï¿½cupï¿½rer les valeurs 
 		var carte1 = document.getElementById("carte1");
 		var carte2 = document.getElementById("carte2");
 		var carte3 = document.getElementById("carte3");
