@@ -17,6 +17,7 @@ public class TestController {
 	public String helloWorld(Model model) {
 		model.addAttribute("message", "Hello world !");
 		return "helloWorld";
+		
 	}
 	
 	@RequestMapping( value= "/form", method=RequestMethod.GET )
