@@ -23,7 +23,7 @@ import fr.eservice.rallyman.model.entite.Joueur;
 import fr.eservice.rallyman.model.helper.CarteHelper;
 
 /**
- * Contr��leur du jeu Rallyman
+ * Contrôleur du jeu Rallyman
  * @author rally-devteam
  */
 @Controller
@@ -38,7 +38,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected boolean isTermine = false;
 	protected Joueur joueurCourant;
 	
-	static int cpt = 1; // �� supprimer plus tard
+	static int cpt = 1; // à supprimer plus tard
 
 	protected ScoreService scoreService;
 	
@@ -53,7 +53,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		isDemarre = true;
 		specialeCourante = 1;
 		
-		// ordre al��atoire de jeu au lancement du jeu.
+		// ordre aléatoire de jeu au lancement du jeu.
 		Collections.shuffle(listeJoueurs);
 		joueurCourant = listeJoueurs.get(0);
 		
@@ -102,12 +102,12 @@ public class JeuController /* implements interface pour pattern strategy */ {
 					
 				}
 				
-				// v��rification qu'il reste encore des d��s
+				// vérification qu'il reste encore des dés
 				verifierActionPossible(modele, joueur);
 			}
 		}
 		
-		// transmission �� la vue des informations
+		// transmission à la vue des informations
 		modele.addAttribute("carte", carte);
 		modele.addAttribute("joueurs", listeJoueurs);
 		modele.addAttribute("isDemarre", isDemarre);
@@ -118,15 +118,14 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		return "rallyman/partie";
 	}
 
-
 	/**
-	 * Avance le joueur d'une case et g��re les effets de bord li��s �� l'avanc��e.
+	 * Avance le joueur d'une case et gère les effets de bord liés à l'avancée.
 	 * @param joueur
 	 */
 	private void avancerJoueur(String deJoue, Joueur joueur) {
 		List<Cellule> listeCellules = carte.getListeCellules();
 		
-		// si le joueur ��tait sur une cellule
+		// si le joueur était sur une cellule
 		if(joueur.getAvancement() != -1) {
 			Cellule celluleCourante = listeCellules.get(joueur.getAvancement());
 			celluleCourante.setNombreVoitures(celluleCourante.getNombreVoitures() - 1 );
@@ -144,9 +143,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		}
 	}
 
-
 	/**
-	 * V��rifie que le joueur a encore des d��s pour le tour sinon c'est au joueur suivant de jouer.
+	 * Vérifie que le joueur a encore des dés pour le tour sinon c'est au joueur suivant de jouer.
 	 * @param modele
 	 * @param joueur
 	 */
@@ -163,7 +161,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			try {
 				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
 			} catch (final IndexOutOfBoundsException e){
-				// l'utilisateur est �� la derni��re cellule, pas de cellule suivante !
+				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
 			}
 			
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
@@ -185,7 +183,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + " secondes !");
 
 		boolean finiPourTous = true;
-		// recherche si tous les joueurs ont fini la sp��ciale
+		// recherche si tous les joueurs ont fini la spéciale
 		for (final Joueur joueur : listeJoueurs) {
 			if (! joueur.isaFiniLaSpeciale()) {
 				finiPourTous = false;
@@ -193,12 +191,12 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			}
 		}
 		
-		// si tout le monde a fini la sp��ciale
+		// si tout le monde a fini la spéciale
 		if (finiPourTous) {
-			// si c'��tait la derni��re sp��ciale, on clot le jeu
+			// si c'était la dernière spéciale, on clot le jeu
 			if(specialeCourante == Constantes.NOMBRE_COURSES) {
 				// fin du jeu
-				System.out.println("Le jeu est termin�� !");
+				System.out.println("Le jeu est terminé !");
 				isTermine = true;
 				
 				// on trie les joueurs par score
@@ -218,7 +216,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				// on sauvegarde les scores
 				scoreService.sauvegarderScores(1, 1, scores);
 				
-			// sinon on d��marre la nouvelle sp��ciale
+			// sinon on démarre la nouvelle spéciale
 			} else {
 				initialiserNouvelleSpeciale();
 			}
@@ -226,25 +224,25 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 
 	/**
-	 * Initialise le plateau et les joueurs pour d��marrer la nouvelle sp��ciale.
+	 * Initialise le plateau et les joueurs pour démarrer la nouvelle spéciale.
 	 */
 	private void initialiserNouvelleSpeciale() {
 		
-		System.out.println("D��marrage d'une nouvelle sp��ciale !");
+		System.out.println("Démarrage d'une nouvelle spéciale !");
 		
 		specialeCourante++;
 		
-		// r��initialisation des d��s
+		// réinitialisation des dés
 		des.reinitialiserDes();
 		
-		// r��initialisation des joueurs
+		// réinitialisation des joueurs
 		for(final Joueur joueur : listeJoueurs) {
 			joueur.setaFiniLaSpeciale(false);
 			joueur.setAvancement(-1);
 			joueur.getVoiture().setVitesseCourante(0);
 		}
 		
-		// r��initilisation du plateau
+		// réinitilisation du plateau
 		carte.reinitialiser();
 	}
 
@@ -269,7 +267,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	 */
 	protected void passerJoueurSuivant(Joueur joueur) {
 		
-		// on enregistre le temps pass�� durant le tour
+		// on enregistre le temps passé durant le tour
 		if(! joueur.isaFiniLaSpeciale()) {
 			enregistrerTempsDuTour(joueur);
 		}
@@ -290,7 +288,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 	
 	/**
-	 * Enregistre le temps pass�� par le joueur sur le tour.
+	 * Enregistre le temps passé par le joueur sur le tour.
 	 * @param joueur
 	 */
 	private void enregistrerTempsDuTour(final Joueur joueur) {
@@ -357,11 +355,11 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			System.out.println("[JEU EN PREPARATION] Actuellement " + listeJoueurs.size() + " joueurs ! ");
 			return listeJoueurs.size() == Constantes.NOMBRE_JOUEURS;
 		} else {
-			throw new Exception("Le jeu a d��j�� d��marr�� !");
+			throw new Exception("Le jeu a déjà démarré !");
 		}
 	}
 	
-	// classe "bouchon" temporaire tant qu'on relie pas �� la base du portail
+	// classe "bouchon" temporaire tant qu'on relie pas à la base du portail
 	class UtilisateurMock {
 		protected int identifiant;
 
