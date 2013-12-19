@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Objet score persisté en base de données.
  * @author rally-devteam
  */
-@Entity(name="GAMEPORTAL")
+@Entity
+@Table(name="GAMEPORTAL")
 public class ScoreDO {
 
 	@Id
