@@ -6,8 +6,11 @@
 <title>Manhattan</title>
 </head>
 <body>
-Manhattan - Joueur 1
-<% out.print("truc"); %>
+Manhattan - Joueur 1 
+<% 
+	String name = request.getParameter("name");
+	out.print("("+name+")"); 
+%>
 <table width="700" height="450">
   <tr>
     <td width="33%"><table id="scores" width="100%" border="1">
@@ -234,7 +237,6 @@ Manhattan - Joueur 1
     </table></td>
   </tr>
 </table>
-
 <table width="200">
   <tr>
     <td id="carte1"></td>
@@ -269,18 +271,18 @@ Manhattan - Joueur 1
 
 <script type="text/javascript" />
 	
-	var JOUEUR = 1; // R�cup�rer la valeur 
+	var JOUEUR = 1; // Recuperer la valeur 
 	var score = 0;
 	
 	function generate_carte(value) {
 		var carte = document.createElement('img');
-		carte.src = 'img/cartes/CARTE'+ value + '.png';
+		carte.src = asset('cartes/CARTE'+ value + '.png');
 		return carte;
 	}
 	
 	function generate_pion(nom) {
 		var pion = document.createElement('img');
-		pion.src = 'img/pions/'+ nom + '.png';
+		pion.src =  asset('pions/'+ nom + '.png');
 		return pion;
 	}
 	
@@ -326,6 +328,10 @@ Manhattan - Joueur 1
 		carte2.appendChild(generate_carte(2));
 		carte3.appendChild(generate_carte(3));
 		carte4.appendChild(generate_carte(4));
+	}
+	
+	function asset(src) {
+		return '/assets/manhattan/img/' + src;
 	}
 	
 	init_pions();

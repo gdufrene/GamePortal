@@ -237,7 +237,6 @@ Manhattan - Joueur 1
     </table></td>
   </tr>
 </table>
-
 <table width="200">
   <tr>
     <td id="carte1"></td>
