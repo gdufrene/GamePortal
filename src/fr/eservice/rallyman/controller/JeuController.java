@@ -23,7 +23,7 @@ import fr.eservice.rallyman.model.entite.Joueur;
 import fr.eservice.rallyman.model.helper.CarteHelper;
 
 /**
- * Contrôleur du jeu Rallyman
+ * Contr��leur du jeu Rallyman
  * @author rally-devteam
  */
 @Controller
@@ -38,7 +38,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected boolean isTermine = false;
 	protected Joueur joueurCourant;
 	
-	static int cpt = 1; // à supprimer plus tard
+	static int cpt = 1; // �� supprimer plus tard
 
 	protected ScoreService scoreService;
 	
@@ -53,7 +53,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		isDemarre = true;
 		specialeCourante = 1;
 		
-		// ordre aléatoire de jeu au lancement du jeu.
+		// ordre al��atoire de jeu au lancement du jeu.
 		Collections.shuffle(listeJoueurs);
 		joueurCourant = listeJoueurs.get(0);
 		
@@ -102,12 +102,12 @@ public class JeuController /* implements interface pour pattern strategy */ {
 					
 				}
 				
-				// vérification qu'il reste encore des dés
+				// v��rification qu'il reste encore des d��s
 				verifierActionPossible(modele, joueur);
 			}
 		}
 		
-		// transmission à la vue des informations
+		// transmission �� la vue des informations
 		modele.addAttribute("carte", carte);
 		modele.addAttribute("joueurs", listeJoueurs);
 		modele.addAttribute("isDemarre", isDemarre);
@@ -118,14 +118,15 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		return "rallyman/partie";
 	}
 
+
 	/**
-	 * Avance le joueur d'une case et gère les effets de bord liés à l'avancée.
+	 * Avance le joueur d'une case et g��re les effets de bord li��s �� l'avanc��e.
 	 * @param joueur
 	 */
 	private void avancerJoueur(String deJoue, Joueur joueur) {
 		List<Cellule> listeCellules = carte.getListeCellules();
 		
-		// si le joueur était sur une cellule
+		// si le joueur ��tait sur une cellule
 		if(joueur.getAvancement() != -1) {
 			Cellule celluleCourante = listeCellules.get(joueur.getAvancement());
 			celluleCourante.setNombreVoitures(celluleCourante.getNombreVoitures() - 1 );
@@ -143,8 +144,9 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		}
 	}
 
+
 	/**
-	 * Vérifie que le joueur a encore des dés pour le tour sinon c'est au joueur suivant de jouer.
+	 * V��rifie que le joueur a encore des d��s pour le tour sinon c'est au joueur suivant de jouer.
 	 * @param modele
 	 * @param joueur
 	 */
@@ -160,7 +162,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			try {
 				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
 			} catch (final IndexOutOfBoundsException e){
-				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
+				// l'utilisateur est �� la derni��re cellule, pas de cellule suivante !
 			}
 			
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
@@ -180,7 +182,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		System.out.println("Le joueur " + pJoueur.getIdentifiant() + " a fini la manche en " + pJoueur.getTemps() + " secondes !");
 
 		boolean finiPourTous = true;
-		// recherche si tous les joueurs ont fini la spéciale
+		// recherche si tous les joueurs ont fini la sp��ciale
 		for (final Joueur joueur : listeJoueurs) {
 			if (! joueur.isaFiniLaSpeciale()) {
 				finiPourTous = false;
@@ -188,12 +190,12 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			}
 		}
 		
-		// si tout le monde a fini la spéciale
+		// si tout le monde a fini la sp��ciale
 		if (finiPourTous) {
-			// si c'était la dernière spéciale, on clot le jeu
+			// si c'��tait la derni��re sp��ciale, on clot le jeu
 			if(specialeCourante == Constantes.NOMBRE_COURSES) {
 				// fin du jeu
-				System.out.println("Le jeu est terminé !");
+				System.out.println("Le jeu est termin�� !");
 				isTermine = true;
 				
 				// on trie les joueurs par score
@@ -213,7 +215,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				// on sauvegarde les scores
 				scoreService.sauvegarderScores(1, 1, scores);
 				
-			// sinon on démarre la nouvelle spéciale
+			// sinon on d��marre la nouvelle sp��ciale
 			} else {
 				initialiserNouvelleSpeciale();
 			}
@@ -221,25 +223,25 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 
 	/**
-	 * Initialise le plateau et les joueurs pour démarrer la nouvelle spéciale.
+	 * Initialise le plateau et les joueurs pour d��marrer la nouvelle sp��ciale.
 	 */
 	private void initialiserNouvelleSpeciale() {
 		
-		System.out.println("Démarrage d'une nouvelle spéciale !");
+		System.out.println("D��marrage d'une nouvelle sp��ciale !");
 		
 		specialeCourante++;
 		
-		// réinitialisation des dés
+		// r��initialisation des d��s
 		des.reinitialiserDes();
 		
-		// réinitialisation des joueurs
+		// r��initialisation des joueurs
 		for(final Joueur joueur : listeJoueurs) {
 			joueur.setaFiniLaSpeciale(false);
 			joueur.setAvancement(-1);
 			joueur.getVoiture().setVitesseCourante(0);
 		}
 		
-		// réinitilisation du plateau
+		// r��initilisation du plateau
 		carte.reinitialiser();
 	}
 
@@ -249,20 +251,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	 * @param joueur
 	 */
 	private void calculerNouvelleVitesse(String deJoue, Joueur joueur) {
-		int nouvelleVitesse = -1;
-		if(deJoue.equals(Constantes.DE_VITESSE1)) {
-			nouvelleVitesse = 1;
-		} else if(deJoue.equals(Constantes.DE_VITESSE2)) {
-			nouvelleVitesse = 2;
-		} else if(deJoue.equals(Constantes.DE_VITESSE3)) {
-			nouvelleVitesse = 3;
-		} else if(deJoue.equals(Constantes.DE_VITESSE4)) {
-			nouvelleVitesse = 4;
-		} else if(deJoue.equals(Constantes.DE_VITESSE5)) {
-			nouvelleVitesse = 5;
-		}
-		
-		des.supprimerDe(deJoue);
+		int nouvelleVitesse = des.getListDes().get(deJoue).getValeur();
+		des.getListDes().get(deJoue).setDisponible(false);
 		
 		if(nouvelleVitesse != -1) {
 			joueur.getVoiture().setVitesseCourante(nouvelleVitesse);
@@ -276,7 +266,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	 */
 	protected void passerJoueurSuivant(Joueur joueur) {
 		
-		// on enregistre le temps passé durant le tour
+		// on enregistre le temps pass�� durant le tour
 		if(! joueur.isaFiniLaSpeciale()) {
 			enregistrerTempsDuTour(joueur);
 		}
@@ -297,7 +287,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	}
 	
 	/**
-	 * Enregistre le temps passé par le joueur sur le tour.
+	 * Enregistre le temps pass�� par le joueur sur le tour.
 	 * @param joueur
 	 */
 	private void enregistrerTempsDuTour(final Joueur joueur) {
@@ -364,11 +354,11 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			System.out.println("[JEU EN PREPARATION] Actuellement " + listeJoueurs.size() + " joueurs ! ");
 			return listeJoueurs.size() == Constantes.NOMBRE_JOUEURS;
 		} else {
-			throw new Exception("Le jeu a déjà démarré !");
+			throw new Exception("Le jeu a d��j�� d��marr�� !");
 		}
 	}
 	
-	// classe "bouchon" temporaire tant qu'on relie pas à la base du portail
+	// classe "bouchon" temporaire tant qu'on relie pas �� la base du portail
 	class UtilisateurMock {
 		protected int identifiant;
 
