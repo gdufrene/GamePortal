@@ -1,3 +1,4 @@
+<%@page import="manhattan.*"%>
 <!DOCTYPE html>
 <html lang="fr-FR">
 <head>
@@ -9,7 +10,7 @@ Manhattan - Joueur 1
 <table width="700" height="450">
   <tr>
     <td width="33%"><table id="scores" width="100%" border="1">
-<tr>
+	  <tr>
         <td id="score_16">16</td>
         <td id="score_32">32</td>
         <td id="score_48">48</td>
@@ -250,14 +251,14 @@ Manhattan - Joueur 1
     <td id="pion4"></td>
   </tr>
   <tr>
-    <td>BÃ¢timents choisis (reste 6)</td>
+    <td>Batiments choisis (reste 6)</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
   </tr>
   <tr>
-    <td>BÃ¢timents restants</td>
+    <td>Batiments restants</td>
     <td>12</td>
     <td>6</td>
     <td>4</td>
@@ -267,7 +268,7 @@ Manhattan - Joueur 1
 
 <script type="text/javascript" />
 	
-	var JOUEUR = 1; // RÃ©cupÃ©rer la valeur 
+	var JOUEUR = 1; // Récupérer la valeur 
 	var score = 0;
 	
 	function generate_carte(value) {
@@ -288,25 +289,25 @@ Manhattan - Joueur 1
 		var pion3 = document.getElementById("pion3");
 		var pion4 = document.getElementById("pion4");
 
-		if (JOUEUR = 1) {
+		if (JOUEUR === 1) {
 			pion1.appendChild(generate_pion("pionts_blue_1_small"));
 			pion2.appendChild(generate_pion("pionts_blue_2_small"));
 			pion3.appendChild(generate_pion("pionts_blue_3_small"));
 			pion4.appendChild(generate_pion("pionts_blue_4_small"));
 		}
-		else if (JOUEUR = 2) {
+		else if (JOUEUR === 2) {
 			pion1.appendChild(generate_pion("pionts_grey_1_small"));
 			pion2.appendChild(generate_pion("pionts_grey_2_small"));
 			pion3.appendChild(generate_pion("pionts_grey_3_small"));
 			pion4.appendChild(generate_pion("pionts_grey_4_small"));			
 		}
-		else if (JOUEUR = 3) {
+		else if (JOUEUR === 3) {
 			pion1.appendChild(generate_pion("pionts_orange_1_small"));
 			pion2.appendChild(generate_pion("pionts_orange_2_small"));
 			pion3.appendChild(generate_pion("pionts_orange_3_small"));
 			pion4.appendChild(generate_pion("pionts_orange_4_small"));			
 		}
-		else if (JOUEUR = 4) {
+		else if (JOUEUR === 4) {
 			pion1.appendChild(generate_pion("pionts_purple_1_small"));
 			pion2.appendChild(generate_pion("pionts_purple_2_small"));
 			pion3.appendChild(generate_pion("pionts_purple_3_small"));
@@ -314,7 +315,7 @@ Manhattan - Joueur 1
 		}
 	}
 	
-	function init_cartes() { // rÃ©cupÃ©rer les valeurs 
+	function init_cartes() { // récupérer les valeurs 
 		var carte1 = document.getElementById("carte1");
 		var carte2 = document.getElementById("carte2");
 		var carte3 = document.getElementById("carte3");
