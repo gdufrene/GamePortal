@@ -119,7 +119,7 @@ public class Des {
 		}
 		
 		// retrait des d��s si la cellule suivante contient d��j�� deux voitures
-		if(celluleSuivante.getNombreVoitures() == 2){
+		if(celluleSuivante != null && (celluleSuivante.getNombreVoitures() == 2)){
 			this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);

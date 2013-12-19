@@ -155,9 +155,10 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		List<String> desDisponibles = null;
 		
 		if(joueur.getAvancement() == -1) {
+			System.out.println("###### 1");
 			desDisponibles = des.getListeDesDisponibles(0, null, null);
 		} else if (! joueur.isaFiniLaSpeciale()) {
-			
+			System.out.println("###### 2");
 			Cellule celluleSuivante = null;
 			try {
 				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
@@ -169,8 +170,10 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		}
 		
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
+			System.out.println("###### 3");
 			passerJoueurSuivant(joueur);
 		} else {
+			System.out.println("###### 4");
 			modele.addAttribute("des", desDisponibles);
 		}
 	}
