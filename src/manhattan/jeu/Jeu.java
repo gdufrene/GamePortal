@@ -51,7 +51,7 @@ public class Jeu {
 	 */
 	public void quiCommence(int nbJoueurs) {
 		int j = (int) Math.floor(Math.random() * nbJoueurs);
-		currentPlayer = j;
+		setCurrentPlayer(j);
 	}
 
 	/**
@@ -62,5 +62,17 @@ public class Jeu {
 			for (int c = 0; c < 6; c++)
 				joueurs.get(i).ajouterCarteEnMain(Pioche.piocher());
 		}
+	}
+	
+	public int getNbJoueurs() {
+		return nbJoueurs;
+	}
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 }

@@ -1,3 +1,6 @@
+<%@page import="manhattan.jeu.TourListener"%>
+<%@page import="manhattan.jeu.Jeu"%>
+<%@page import="manhattan.jeu.JoueurProvider"%>
 <%@page import="manhattan.*"%>
 <!DOCTYPE html>
 <html lang="fr-FR">
@@ -9,7 +12,17 @@
 Manhattan - Joueur 1 
 <% 
 	String name = request.getParameter("name");
-	out.print("("+name+")"); 
+	if (name != null) {	
+		out.print("("+name+")"); 
+	}
+	
+	JoueurProvider jp = (JoueurProvider) request.getAttribute("test");
+	Jeu jeu = jp.getJeu();
+	
+	out.print("<br/>Tour du joueur " + jeu.getCurrentPlayer());
+	//jeu.start(new TourListener)
+	
+	
 %>
 <table width="700" height="450">
   <tr>
