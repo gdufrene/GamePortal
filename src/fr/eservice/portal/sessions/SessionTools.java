@@ -85,7 +85,7 @@ public class SessionTools {
 		if (joueurs.containsKey(jeu)) {
 			p = joueurs.get(jeu);
 			for (Person person : p) {
-				res += person.getName()+" ";
+				res += person.getName()+";";
 			}
 			return res;
 		}
