@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Manhattan</title>
 </head>
-
 <body>
 Manhattan - Joueur 1
 <table width="700" height="450">
