@@ -6,6 +6,9 @@ import manhattan.cartes.Carte;
 import manhattan.cartes.Pioche;
 import manhattan.plateau.Quartier;
 
+/**
+ * @author drubay
+ */
 public class Jeu {
 	private ArrayList<Quartier> quartiers = new ArrayList<Quartier>();
 	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();

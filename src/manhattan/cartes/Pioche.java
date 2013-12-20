@@ -2,6 +2,9 @@ package manhattan.cartes;
 
 import java.util.ArrayList;
 
+/**
+ * @author drubay
+ */
 public class Pioche {
 	private static ArrayList<Carte> pioche = new ArrayList<Carte>();
 

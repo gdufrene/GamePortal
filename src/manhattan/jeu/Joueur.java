@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import manhattan.cartes.Carte;
 
+/**
+ * @author drubay
+ */
 public class Joueur {
 	private ArrayList<Carte> main = new ArrayList<Carte>();
 	private ArrayList<Piece> pieces = new ArrayList<Piece>();
