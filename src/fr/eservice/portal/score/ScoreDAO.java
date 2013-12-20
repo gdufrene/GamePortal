@@ -51,16 +51,41 @@ public class ScoreDAO implements IScore {
 			int identifiantSession) {
 		List<ScoreBean> resultat = new ArrayList<ScoreBean>();
 		
-		Query requete = sessionFactory.getCurrentSession().createSQLQuery(
-				"from ScoreDO as s where identifiantJeu = :idJeu and identifiantSession = :idSession order by placement");
+		sessionFactory.getCurrentSession().beginTransaction();
+		Query requete = sessionFactory.getCurrentSession().createQuery(
+				"from ScoreDO as s where s.identifiantJeu = :idJeu and s.identifiantSession = :idSession order by s.placement");
 		requete.setParameter("idJeu", identifiantJeu);
 		requete.setParameter("idSession", identifiantSession);
 		
 		List<?> liste = requete.list();
+		sessionFactory.getCurrentSession().getTransaction().commit();
 		
 		for(final Object score : liste) {
 			ScoreBean scoreBean = alimenterBean((ScoreDO) score);
 			resultat.add(scoreBean);
+		}
+		
+		return resultat;
+	}
+
+	@Override
+	public List<Integer> recupererSessions(int identifiantJeu) {
+		List<Integer> resultat = new ArrayList<Integer>();
+		
+		sessionFactory.getCurrentSession().beginTransaction();
+		Query requete = sessionFactory.getCurrentSession().createQuery(
+				"from ScoreDO as s where s.identifiantJeu = :idJeu");
+		requete.setParameter("idJeu", identifiantJeu);
+		
+		List<?> liste = requete.list();
+		sessionFactory.getCurrentSession().getTransaction().commit();
+		
+		for(final Object scoreTable : liste) {
+			ScoreDO score = (ScoreDO) scoreTable;
+			
+			if(! resultat.contains(score.getIdentifiantSession())) {
+				resultat.add(score.getIdentifiantSession());
+			}
 		}
 		
 		return resultat;

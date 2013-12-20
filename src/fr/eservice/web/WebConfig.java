@@ -69,6 +69,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    Properties hibernateProperties = new Properties();
 	    hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
 	    hibernateProperties.put("hibernate.current_session_context_class", "thread");
+	    hibernateProperties.put("hibernate.show_sql", true);
 	    sessionFactoryBean.setHibernateProperties(hibernateProperties);
 	    
 	    return sessionFactoryBean;

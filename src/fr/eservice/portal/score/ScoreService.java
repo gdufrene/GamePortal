@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author rally-devteam
  */
 @Component
-public class ScoreService {
+public class ScoreService implements IScore {
 
 	private ScoreDAO scoreDAO;
 
@@ -18,9 +18,22 @@ public class ScoreService {
 	public void setScoreDAO(ScoreDAO scoreDAO) {
 		this.scoreDAO = scoreDAO;
 	}
-	
-	public void sauvegarderScores(int identifiantJeu, int identifiantSession, List<ScoreBean> scores) {
+
+	@Override
+	public void enregistrerScores(int identifiantJeu, int identifiantSession,
+			List<ScoreBean> scores) {
 		scoreDAO.enregistrerScores(identifiantJeu, identifiantSession, scores);
+	}
+
+	@Override
+	public List<ScoreBean> recupererScores(int identifiantJeu,
+			int identifiantSession) {
+		return scoreDAO.recupererScores(identifiantJeu, identifiantSession);
+	}
+
+	@Override
+	public List<Integer> recupererSessions(int identifiantJeu) {
+		return scoreDAO.recupererSessions(identifiantJeu);
 	}
 	
 	
