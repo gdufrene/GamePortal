@@ -153,25 +153,23 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		List<String> desDisponibles = null;
 		
 		if(joueur.getAvancement() == -1) {
-			System.out.println("###### 1");
 			desDisponibles = des.getListeDesDisponibles(0, null, null);
 		} else if (! joueur.isaFiniLaSpeciale()) {
-			System.out.println("###### 2");
 			Cellule celluleSuivante = null;
 			try {
 				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
 			} catch (final IndexOutOfBoundsException e){
 				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
 			}
-			
+			System.out.println("vit cour : "+joueur.getVoiture().getVitesseCourante());
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
 		}
+		System.out.println("des dispo : "+desDisponibles.size()+" "+desDisponibles.toString());
+		
 		
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
-			System.out.println("###### 3");
 			passerJoueurSuivant(joueur);
 		} else {
-			System.out.println("###### 4");
 			modele.addAttribute("des", desDisponibles);
 		}
 	}
@@ -253,7 +251,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	 */
 	private void calculerNouvelleVitesse(String deJoue, Joueur joueur) {
 		int nouvelleVitesse = des.getListDes().get(deJoue).getValeur();
-		des.getListDes().get(deJoue).setDisponible(false);
+		des.listDes.get(deJoue).setUtilise(true);
 		
 		if(nouvelleVitesse != -1) {
 			joueur.getVoiture().setVitesseCourante(nouvelleVitesse);

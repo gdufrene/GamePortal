@@ -22,7 +22,7 @@ public class Des {
 	protected De vitesse5;
 	protected De gaz1;
 	protected De gaz2;*/
-	protected HashMap<String, De> listDes;
+	public HashMap<String, De> listDes;
 	
 	
 	public Des() {
@@ -44,6 +44,7 @@ public class Des {
 		    //String key = entry.getKey();
 		    De de = entry.getValue();
 		    de.setDisponible(true); 
+		    de.setUtilise(false);
 		}
 	}
 	
@@ -62,8 +63,10 @@ public class Des {
 	public List<String> getListeDesDisponibles(int vitesseCourante, Cellule cellule, Cellule celluleSuivante) {
 		
 		// retrait des d��s selon la vitesse courante
+		System.out.println("@@@ 1 "+vitesseCourante);
 		switch(vitesseCourante) {
 			case 0:
+				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
@@ -73,46 +76,74 @@ public class Des {
 			break;
 			case 1:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(true);
 			break;
 			case 2:
+				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(true);
 			break;
 			case 3:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(true);
 			break;
 			case 4:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(true);
 			break;
 			case 5:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
+				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(true);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(true);
 			break;
 		}
 		
 		// retrait des d��s si limitation de vitesse sur la cellule
 		if(cellule != null) {
+			System.out.println("@@@ 2 "+cellule.getLimitationVitesse());
 			switch(cellule.getLimitationVitesse()) {
 			case 2:
+				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
 			break;
 			case 3:
+				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(false);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
 			break;
 			case 4:
+				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE3).setDisponible(true);
+				this.listDes.get(Constantes.DE_VITESSE4).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
 			break;
 			}
@@ -120,6 +151,7 @@ public class Des {
 		
 		// retrait des d��s si la cellule suivante contient d��j�� deux voitures
 		if(celluleSuivante != null && (celluleSuivante.getNombreVoitures() == 2)){
+			System.out.println("@@@ 3");
 			this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
@@ -134,7 +166,7 @@ public class Des {
 		for(Entry<String, De> entry : listDes.entrySet()) {
 		    String key = entry.getKey();
 		    De de = entry.getValue();
-		    if(de.getDisponible()){
+		    if(de.getDisponible() && !de.getUtilise()){
 		    	list.add(key);
 		    }
 		}
