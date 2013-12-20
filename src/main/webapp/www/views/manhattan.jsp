@@ -1,3 +1,8 @@
+<%@page import="manhattan.cartes.Carte"%>
+<%@page import="manhattan.jeu.Joueur"%>
+<%@page import="manhattan.jeu.Piece"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="manhattan.plateau.Quartier"%>
 <%@page import="manhattan.jeu.TourListener"%>
 <%@page import="manhattan.jeu.Jeu"%>
 <%@page import="manhattan.jeu.JoueurProvider"%>
@@ -18,12 +23,21 @@ Manhattan - Joueur 1
 	
 	JoueurProvider jp = (JoueurProvider) request.getAttribute("test");
 	Jeu jeu = jp.getJeu();
+	ArrayList<Piece> piecesCourantes = null;
+	ArrayList<Carte> mainCourante = null;
+	int joueurCourant = jeu.nextPlayer();
 	
-	out.print("<br/>Tour du joueur " + jeu.getCurrentPlayer());
-	//jeu.start(new TourListener)
+	out.print("<br/>Tour du joueur " + joueurCourant);
+	mainCourante = jeu.getCartesPourLeTour(joueurCourant);
+	piecesCourantes = jeu.getElementsPourLeTour(joueurCourant);	
+
 	
+		
 	
-%>
+	// jeu.jouerCartePiece(joueur, quartier, carte, piece);
+	
+	%>
+
 <table width="700" height="450">
   <tr>
     <td width="33%"><table id="scores" width="100%" border="1">
@@ -267,7 +281,7 @@ Manhattan - Joueur 1
     <td id="pion4"></td>
   </tr>
   <tr>
-    <td>Batiments choisis (reste 6)</td>
+    <td>Batiments choisis</td>
     <td>0</td>
     <td>0</td>
     <td>0</td>
@@ -282,14 +296,14 @@ Manhattan - Joueur 1
   </tr>
 </table>
 
-<script type="text/javascript" />
+<script type="text/javascript">
 	
 	var JOUEUR = 1; // Recuperer la valeur 
 	var score = 0;
 	
 	function generate_carte(value) {
 		var carte = document.createElement('img');
-		carte.src = asset('cartes/CARTE'+ value + '.png');
+		carte.src = asset('cartes/CARTE'+ (value < 10 ? "0" : "") + value + '.png');
 		return carte;
 	}
 	
@@ -331,16 +345,16 @@ Manhattan - Joueur 1
 		}
 	}
 	
-	function init_cartes() { // rï¿½cupï¿½rer les valeurs 
+	function init_cartes() { // récupérer les valeurs 
 		var carte1 = document.getElementById("carte1");
 		var carte2 = document.getElementById("carte2");
 		var carte3 = document.getElementById("carte3");
 		var carte4 = document.getElementById("carte4");
 		
-		carte1.appendChild(generate_carte(1));
-		carte2.appendChild(generate_carte(2));
-		carte3.appendChild(generate_carte(3));
-		carte4.appendChild(generate_carte(4));
+		carte1.appendChild(generate_carte(<% out.print(mainCourante.get(0).toString()); %>));
+		carte2.appendChild(generate_carte(<% out.print(mainCourante.get(1).toString()); %>));
+		carte3.appendChild(generate_carte(<% out.print(mainCourante.get(2).toString()); %>));
+		carte4.appendChild(generate_carte(<% out.print(mainCourante.get(3).toString()); %>));
 	}
 	
 	function asset(src) {
