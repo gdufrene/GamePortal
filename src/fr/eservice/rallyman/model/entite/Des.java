@@ -147,6 +147,12 @@ public class Des {
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
 			break;
 			}
+			if(celluleSuivante.getLimitationVitesse() > vitesseCourante){
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(false);
+			}
+			
+			
 		}
 		
 		// retrait des d��s si la cellule suivante contient d��j�� deux voitures

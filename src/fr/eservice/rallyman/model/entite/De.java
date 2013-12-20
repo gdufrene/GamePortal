@@ -6,8 +6,8 @@ package fr.eservice.rallyman.model.entite;
 import java.util.ArrayList;
 
 /**
- * @author alexandre
- *
+ * Classe De
+ * @author rally-devteam
  */
 public class De {
 	
