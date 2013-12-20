@@ -19,19 +19,16 @@ public class ScoreService implements IScore {
 		this.scoreDAO = scoreDAO;
 	}
 
-	@Override
 	public void enregistrerScores(int identifiantJeu, int identifiantSession,
 			List<ScoreBean> scores) {
 		scoreDAO.enregistrerScores(identifiantJeu, identifiantSession, scores);
 	}
 
-	@Override
 	public List<ScoreBean> recupererScores(int identifiantJeu,
 			int identifiantSession) {
 		return scoreDAO.recupererScores(identifiantJeu, identifiantSession);
 	}
 
-	@Override
 	public List<Integer> recupererSessions(int identifiantJeu) {
 		return scoreDAO.recupererSessions(identifiantJeu);
 	}

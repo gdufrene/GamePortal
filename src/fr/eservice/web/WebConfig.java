@@ -38,11 +38,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		System.out.println("Hello world !");
 		System.out.println( new File("src/main/webapp/www").exists()  );
-		registry
-			.addResourceHandler("/assets/**")
-			.addResourceLocations("/")
-			.setCachePeriod(31556926);
-		
+		registry.addResourceHandler("/assets/**").addResourceLocations("/").setCachePeriod(31556926);
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
 	}
 	
 	@Bean

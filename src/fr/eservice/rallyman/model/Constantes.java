@@ -15,7 +15,7 @@ public class Constantes {
 	public static final String TYPE_PLAN_EAU= "plan d'eau";
 	
 	public static final String TYPE_LIGNE_DROITE= "ligne droite";
-	public static final String TYPE_VIRAGE= "virage";
+	public static final String TYPE_VIRAGE = "virage";
 	
 	public static final int VOITURE_MAX_PAR_CELLULE = 2;
 	public static final int NOMBRE_JOUEURS = 2;
