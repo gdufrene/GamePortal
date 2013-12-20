@@ -123,8 +123,8 @@ public class Des {
 		
 		// retrait des d��s si limitation de vitesse sur la cellule
 		if(cellule != null) {
-			System.out.println("@@@ 2 "+cellule.getLimitationVitesse());
-			switch(cellule.getLimitationVitesse()) {
+			System.out.println("@@@ 2 "+celluleSuivante.getLimitationVitesse());
+			switch(celluleSuivante.getLimitationVitesse()) {
 			case 2:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
 				this.listDes.get(Constantes.DE_VITESSE2).setDisponible(true);
