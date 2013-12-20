@@ -5,8 +5,8 @@ package fr.eservice.rallyman.model.entite;
 
 
 /**
- * @author alexandre
- *
+ * Classe De
+ * @author rally-devteam
  */
 public class De {
 	

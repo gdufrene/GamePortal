@@ -47,23 +47,10 @@ public class Des {
 		    de.setUtilise(false);
 		}
 	}
-	
-	/**
-	 * Supprime un d�� de la liste (intervient quand un joueur a utilis�� le d�� durant un tour).
-	 * @param de : le nom du d��.
-	 */
-	/*public void supprimerDe(De de) {
-		listeDes.remove(de);
-	}
-
-	public List<De> getListeDes() {
-		return listeDes;
-	}*/
 
 	public List<String> getListeDesDisponibles(int vitesseCourante, Cellule cellule, Cellule celluleSuivante) {
 		
 		// retrait des d��s selon la vitesse courante
-		System.out.println("@@@ 1 "+vitesseCourante);
 		switch(vitesseCourante) {
 			case 0:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
@@ -123,7 +110,6 @@ public class Des {
 		
 		// retrait des d��s si limitation de vitesse sur la cellule
 		if(celluleSuivante != null) {
-			System.out.println("@@@ 2 "+celluleSuivante.getLimitationVitesse());
 			switch(celluleSuivante.getLimitationVitesse()) {
 			case 2:
 				this.listDes.get(Constantes.DE_VITESSE1).setDisponible(true);
@@ -147,11 +133,16 @@ public class Des {
 				this.listDes.get(Constantes.DE_VITESSE5).setDisponible(false);
 			break;
 			}
+			if(celluleSuivante.getLimitationVitesse() < vitesseCourante){
+				this.listDes.get(Constantes.DE_GAZ1).setDisponible(false);
+				this.listDes.get(Constantes.DE_GAZ2).setDisponible(false);
+			}
+			
+			
 		}
 		
 		// retrait des d��s si la cellule suivante contient d��j�� deux voitures
 		if(celluleSuivante != null && (celluleSuivante.getNombreVoitures() == 2)){
-			System.out.println("@@@ 3");
 			this.listDes.get(Constantes.DE_VITESSE1).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE2).setDisponible(false);
 			this.listDes.get(Constantes.DE_VITESSE3).setDisponible(false);
