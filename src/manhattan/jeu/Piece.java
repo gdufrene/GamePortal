@@ -1,5 +1,8 @@
 package manhattan.jeu;
 
+/**
+ * @author drubay
+ */
 public class Piece {
 	private int nombre = 1;
 	

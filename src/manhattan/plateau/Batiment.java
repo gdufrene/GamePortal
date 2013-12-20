@@ -2,6 +2,9 @@ package manhattan.plateau;
 
 import java.util.ArrayList;
 
+/**
+ * @author drubay
+ */
 public class Batiment {
 	private ArrayList<Integer> liste = new ArrayList<Integer>();
 	

@@ -4,6 +4,9 @@ import java.util.TreeMap;
 
 import manhattan.interfaces.GetResultInterface;
 
+/**
+ * @author drubay
+ */
 public class Quartier {
 	private Batiment[][] quartier = new Batiment[3][3];
 	

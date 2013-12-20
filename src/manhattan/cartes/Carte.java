@@ -1,5 +1,8 @@
 package manhattan.cartes;
 
+/**
+ * @author drubay
+ */
 public class Carte {
 	private int x = 0;
 	private int y = 0;

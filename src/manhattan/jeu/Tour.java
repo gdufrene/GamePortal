@@ -6,6 +6,9 @@ import manhattan.cartes.Carte;
 import manhattan.cartes.Pioche;
 import manhattan.plateau.Quartier;
 
+/**
+ * @author drubay
+ */
 public class Tour {
 	/**
 	 * Ajoute un ou plusieurs étages à un batiment

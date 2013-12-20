@@ -22,6 +22,8 @@ public class SessionTools {
 	
 	public static HashMap<String, Boolean> demarre = new HashMap<String, Boolean>();
 	
+	public static HashMap<String, Integer> jnombre = new HashMap<String, Integer>();
+	
 	@Autowired
 	Person myself;
 	
@@ -112,14 +114,24 @@ public class SessionTools {
 		return "";
 	}
 	
-	@RequestMapping( value= "/commencer", method=RequestMethod.GET, params="jeu")
+	@RequestMapping( value= "/commencer", method=RequestMethod.GET, params={"jeu", "nom"})
 	@ResponseBody
-	public String commencer(HttpSession httpsession, @RequestParam("jeu") String jeu) {
+	public String commencer(HttpSession httpsession, @RequestParam("jeu") String jeu, @RequestParam("nom") String nom) {
 		demarre.put(jeu, true);
-		if (demarre.get(jeu))
-			return "demarre";
-		else
-			return "demarre pas";
+		if (jnombre.containsKey(jeu)) {
+			jnombre.put(jeu, jnombre.get(jeu)+1);
+		} else {
+			jnombre.put(jeu, 1);
+		}
+		
+		ArrayList<Person> l = joueurs.get(jeu);
+		if (l.size() == jnombre.get(jeu)){
+			jnombre.put(jeu, 0);
+			joueurs.put(jeu, new ArrayList<Person>());
+			demarre.put(jeu, false);
+		}
+		
+		return "";
 	}
 	
 	@RequestMapping( value= "/vacommencer", method=RequestMethod.GET, params="jeu")
