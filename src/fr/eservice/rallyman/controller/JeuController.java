@@ -148,7 +148,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
 		}
-
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
 			passerJoueurSuivant(joueur);
 		} else {
