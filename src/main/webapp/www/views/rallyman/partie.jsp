@@ -12,14 +12,42 @@
 				cache : false,
 				data : '',/* 'firstName=' + $("#firstName").val() + "&lastName=" + $("#lastName").val() + "&email=" + $("#email").val(), */
 				success : function(response) {
+					$("#notification").css("display", "none");
 					var obj = JSON.parse(response);
-					console.log(obj);
+					console.log(response);
+					
+					var joueurActuel;
+					var joueurPrecedant = localStorage.getItem('joueurPrecedant');
+					if (obj[0].estJoueurCourant)
+						joueurActuel = obj[0].identifiant;
+					if (obj[1].estJoueurCourant)
+						joueurActuel = obj[1].identifiant;
+					if (joueurPrecedant == null){
+						localStorage.setItem('joueurPrecedant', joueurActuel);
+					} else if(joueurPrecedant != joueurActuel){
+						localStorage.setItem('joueurPrecedant', joueurActuel);
+						location.href="/rallyman-partie";				//temporaire
+					}
+					
+					$("#avancement1").text(obj[0].avancement);
+					$("#avancement2").text(obj[1].avancement);
+					/* if (obj[0].avancement == obj[1].avancement){
+						$("#cellule"+obj[0].avancement).find(".occupation").text(2);
+					} else{
+						$("#cellule"+obj[0].avancement).find(".occupation").text(1);
+						$("#cellule"+obj[1].avancement).find(".occupation").text(1);
+					} */
+
+					$("#vitesse1").text(obj[0].voiture.vitesseCourante);
+					$("#vitesse2").text(obj[1].voiture.vitesseCourante);
+					$("#temps1").text(obj[0].temps);
+					$("#temps2").text(obj[1].temps);
 				},
 				error : function() {
-					alert('Connexion avec le serveur perdue. =(');
+					$("#notification").css("display", "block");
 				}
 			});
-		}, 5000);
+		}, 3000);
 	});
 </script>
 
@@ -34,16 +62,17 @@
 		<c:choose>
 			<c:when
 				test="${sessionScope.joueur.identifiant == joueurCourant.identifiant}">
-				Champion, c'est à toi de jouer !
-				
-				<c:forEach var="de" items="${des}">
-					<a
-						href="/rallyman-partie?action=jouer&deJoue=<c:out value="${de}" />"><c:out
-							value="${de}" /></a>
-				</c:forEach>
+				<div id="controle">
+					Champion, c'est à toi de jouer !
 
-				<a href="/rallyman-partie?action=passerSonTour">Fin du tour</a>
+					<c:forEach var="de" items="${des}">
+						<a
+							href="/rallyman-partie?action=jouer&deJoue=<c:out value="${de}" />"><c:out
+								value="${de}" /></a>
+					</c:forEach>
 
+					<a href="/rallyman-partie?action=passerSonTour">Fin du tour</a>
+				</div>
 			</c:when>
 			<c:otherwise>
 				Ce n'est pas à toi de jouer, patiente !
@@ -65,9 +94,12 @@
 				</c:when>
 				<c:otherwise>
 				Joueur <c:out value="${joueur.identifiant}" /> 
-				à la cellule <c:out value="${joueur.avancement}" /> 
-				roule à la vitesse <c:out value="${joueur.voiture.vitesseCourante}" />
-				et a déjà passé <c:out value="${joueur.temps}" /> secondes sur le rally.
+				à la cellule <span id="avancement${joueur.identifiant}"><c:out
+							value="${joueur.avancement}" /> </span>
+				roule à la vitesse <span id="vitesse${joueur.identifiant}"><c:out
+							value="${joueur.voiture.vitesseCourante}" /></span>
+				et a déjà passé <span id="temps${joueur.identifiant}"><c:out
+							value="${joueur.temps}" /></span> secondes sur le rally.
 				</c:otherwise>
 			</c:choose>
 			<br />
@@ -75,28 +107,35 @@
 
 		<h2>Plateau de jeu</h2>
 
-		<c:forEach var="cellule" items="${carte.listeCellules}">
+		<c:forEach var="cellule" items="${carte.listeCellules}"
+			varStatus="loop">
 			<!--<c:forEach var="joueur" items="${joueurs}">
 				<c:if test="${joueur.avancement == cellule.identifiant}">
 					Jr<c:out value="${joueur.identifiant}" /> 
 				</c:if>
 			</c:forEach>-->
-	
-			Cellule <c:out value="${cellule.identifiant}" />, <c:out
-				value="${cellule.type}" />
-			
-			- limitée à la vitesse <c:out value="${cellule.limitationVitesse}" />
-			
-			- occupée par <c:out value="${cellule.nombreVoitures}" /> voiture(s)
-			
-			<c:if test="${cellule.natureAGauche != null}">
-				- à gauche, il y a : <c:out value="${cellule.natureAGauche}" />
-			</c:if>
 
-			<c:if test="${cellule.natureADroite != null}">
-				- à droite, il y a : <c:out value="${cellule.natureADroite}" />
-			</c:if>
-			<br />
+			<div id="cellule${loop.index}">
+				Cellule
+				<c:out value="${cellule.identifiant}" />
+				,
+				<c:out value="${cellule.type}" />
+
+				- limitée à la vitesse
+				<c:out value="${cellule.limitationVitesse}" />
+
+				- occupée par <span class="occupation"><c:out
+						value="${cellule.nombreVoitures}" /></span> voiture(s)
+
+				<c:if test="${cellule.natureAGauche != null}">
+					- à gauche, il y a : <c:out value="${cellule.natureAGauche}" />
+				</c:if>
+
+				<c:if test="${cellule.natureADroite != null}">
+					- à droite, il y a : <c:out value="${cellule.natureADroite}" />
+				</c:if>
+				<br />
+			</div>
 		</c:forEach>
 
 	</c:when>
@@ -127,4 +166,10 @@
 
 
 <a href="/rallyman-partie">Rafraichir la page</a>
+
+<div id="notification"
+	style="position: absolute; top: 0px; right: 0px; background-color: black; color: white; padding: 5px; display: none;">
+	<p>Connexion avec le serveur perdue. =(</p>
+</div>
+
 <jsp:include page="/views/partials/footer.jsp" />

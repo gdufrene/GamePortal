@@ -62,6 +62,7 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		// ordre aléatoire de jeu au lancement du jeu.
 		Collections.shuffle(listeJoueurs);
 		joueurCourant = listeJoueurs.get(0);
+		joueurCourant.setEstJoueurCourant(true);
 
 		// initialiastion de la carte
 		carte = CarteHelper.initialiserCarte1();
@@ -273,7 +274,9 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			} else {
 				index++;
 			}
+			joueurCourant.setEstJoueurCourant(false);
 			joueurCourant = listeJoueurs.get(index);
+			joueurCourant.setEstJoueurCourant(true);
 		} while (joueurCourant.isaFiniLaSpeciale() &&  ++parcours != listeJoueurs.size());
 
 		des.reinitialiserDes();

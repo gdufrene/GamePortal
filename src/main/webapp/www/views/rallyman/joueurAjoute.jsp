@@ -10,12 +10,14 @@ Vous avez bien été ajouté à la partie !
 				cache : false,
 				data : '',/* 'firstName=' + $("#firstName").val() + "&lastName=" + $("#lastName").val() + "&email=" + $("#email").val(), */
 				success : function(response) {
+					$("#notification").css("display","none");
 					console.log(response);
 					if (response=="true"){
 						window.location.href = "/rallyman-partie";
 					}
 				},
 				error : function() {
+					$("#notification").css("display","block");
 				}
 			});
 		}, 2500);
@@ -25,4 +27,4 @@ Vous avez bien été ajouté à la partie !
 Vous êtes maintenant en attentes des autres joueurs !
 <jsp:include page="/views/partials/footer.jsp" />
 
-<div style="float:right; top:0px"><p>Connexion avec le serveur perdue. =(</p></div>
+<div id="notification" style="position:absolute; top:0px; right:0px; background-color:black; color:white; padding:5px; display:none;"><p>Connexion avec le serveur perdue. =(</p></div>
