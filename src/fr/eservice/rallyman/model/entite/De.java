@@ -3,7 +3,6 @@
  */
 package fr.eservice.rallyman.model.entite;
 
-import java.util.ArrayList;
 
 /**
  * Classe De

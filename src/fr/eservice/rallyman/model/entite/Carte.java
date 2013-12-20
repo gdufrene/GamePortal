@@ -17,6 +17,10 @@ public class Carte {
 	public void setListeCellules(List<Cellule> listeCellules) {
 		this.listeCellules = listeCellules;
 	}
+	
+	public int getNombreCase() {
+		return this.listeCellules.size();
+	}
 
 	/**
 	 * Réinitialise la carte pour une nouvelle course.

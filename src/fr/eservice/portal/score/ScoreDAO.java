@@ -25,7 +25,6 @@ public class ScoreDAO implements IScore {
 		this.sessionFactory = sessionFactory;
 	}
 
-	@Override
 	public void enregistrerScores(int identifiantJeu, int identifiantSession,
 			List<ScoreBean> scores) {
 		
@@ -46,7 +45,6 @@ public class ScoreDAO implements IScore {
 
 	}
 
-	@Override
 	public List<ScoreBean> recupererScores(int identifiantJeu,
 			int identifiantSession) {
 		List<ScoreBean> resultat = new ArrayList<ScoreBean>();
@@ -68,7 +66,6 @@ public class ScoreDAO implements IScore {
 		return resultat;
 	}
 
-	@Override
 	public List<Integer> recupererSessions(int identifiantJeu) {
 		List<Integer> resultat = new ArrayList<Integer>();
 		
