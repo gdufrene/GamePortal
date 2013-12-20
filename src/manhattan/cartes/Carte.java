@@ -19,6 +19,6 @@ public class Carte {
 	
 	@Override
 	public String toString() {
-		return x+""+y;
+		return String.valueOf(x)+String.valueOf(y);
 	}
 }
