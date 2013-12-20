@@ -86,7 +86,9 @@ window.onbeforeunload = function(){
 		$.ajax({
 			url: "/joueur_quit?jeu=<%=request.getParameter("jeu")%>&nom=<%=request.getParameter("nom")%>",
 			data: "",
-			success: function(data){},
+			success: function(data){
+				console.log('quit');
+			},
 			dataType: "text"
 		});
 		alert('Vous avez quitter la partie');
@@ -131,7 +133,7 @@ function commencer() {
 			$.ajax({
 				url: "/commencer",
 				type : 'GET',
-				data: "jeu=<%=request.getParameter("jeu")%>",
+				data: "jeu=<%=request.getParameter("jeu")%>&nom=<%=request.getParameter("nom")%>",
 				success: function(data2) {
 					console.log(data2);
 					window.location =  "/<%= request.getParameter("jeu") %>?name=<%= request.getParameter("nom") %>&others=" + data;
