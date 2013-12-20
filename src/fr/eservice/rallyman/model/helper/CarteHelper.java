@@ -39,7 +39,7 @@ public class CarteHelper {
 		listeCellules.add(new Cellule(12, 5, null, null, 0));
 		
 		carte.setListeCellules(listeCellules);*/
-		carte.setListeCellules(CarteHelper.getRandomCellules(5));
+		carte.setListeCellules(CarteHelper.getRandomCellules(10));
 		return carte;
 	}
 	
