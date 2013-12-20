@@ -18,7 +18,7 @@ public class Constantes {
 	public static final String TYPE_VIRAGE = "virage";
 	
 	public static final int VOITURE_MAX_PAR_CELLULE = 2;
-	public static final int NOMBRE_JOUEURS = 1;
+	public static final int NOMBRE_JOUEURS = 2;
 	public static final int NOMBRE_COURSES = 3;
 	
 	public static final String DE_VITESSE1  = "vitesse1";
