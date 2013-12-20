@@ -86,13 +86,10 @@
 						<table id="circuit">
 							<tr>
 							<c:forEach var="cellule" items="${carte.listeCellules}">
-
 								<c:if test="${cellule.type == 'ligne droite'}">
-								<% nbCase++; %>	
-									<c:choose>	
-																		
+									<c:choose>							
 										<c:when test="${estHorizontal}">
-											
+											<% nbCase++; %>	
 											<td>
 												<c:choose>
 													<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_droit_hori_1.jpg"/></c:when>
@@ -104,43 +101,54 @@
 											</td>
 										</c:when>
 										<c:when test="${!estHorizontal}">
-												<td>
-													<c:choose>
-														<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_droit_ver_1.jpg"/></c:when>
-														<c:when test="${cellule.limitationVitesse == 2 }"><img src="resources/case_droit_ver_2.jpg"/></c:when>
-														<c:when test="${cellule.limitationVitesse == 3 }"><img src="resources/case_droit_ver_3.jpg"/></c:when>
-														<c:when test="${cellule.limitationVitesse == 4 }"><img src="resources/case_droit_ver_4.jpg"/></c:when>
-														<c:when test="${cellule.limitationVitesse == 5 }"><img src="resources/case_droit_ver_5.jpg"/></c:when>
-													</c:choose>
-												</td>
-											 </tr>
+											<td>
+												<c:choose>
+													<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_droit_ver_1.jpg"/></c:when>
+													<c:when test="${cellule.limitationVitesse == 2 }"><img src="resources/case_droit_ver_2.jpg"/></c:when>
+													<c:when test="${cellule.limitationVitesse == 3 }"><img src="resources/case_droit_ver_3.jpg"/></c:when>
+													<c:when test="${cellule.limitationVitesse == 4 }"><img src="resources/case_droit_ver_4.jpg"/></c:when>
+													<c:when test="${cellule.limitationVitesse == 5 }"><img src="resources/case_droit_ver_5.jpg"/></c:when>
+												</c:choose>
+											</td></tr><tr>
+											<% for(int i = 1 ; i < nbCase; i++) { %>
+												<td></td>
+											<% } %>
 										</c:when>
 									</c:choose>
 								</c:if>
 								
 								<c:if test="${cellule.type == 'virage'}">
+									<c:if test="${estHorizontal}">
+										<td>
+											<c:choose>
+												<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_virage_gauche_1.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 2 }"><img src="resources/case_virage_gauche_2.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 3 }"><img src="resources/case_virage_gauche_3.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 4 }"><img src="resources/case_virage_gauche_4.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 5 }"><img src="resources/case_virage_gauche_5.jpg"/></c:when>
+											</c:choose>
+										</td>
+									</c:if>
+									<c:if test="${!estHorizontal}">
+										<td>
+											<c:choose>
+												<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_virage_droite_1.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 2 }"><img src="resources/case_virage_droite_2.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 3 }"><img src="resources/case_virage_droite_3.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 4 }"><img src="resources/case_virage_droite_4.jpg"/></c:when>
+												<c:when test="${cellule.limitationVitesse == 5 }"><img src="resources/case_virage_droite_5.jpg"/></c:when>
+											</c:choose>
+										</td>
+									</c:if>
+								
+									<c:if test="${estHorizontal}">
+										</tr><tr>
+										<% for(int i = 1 ; i < nbCase; i++) { %>
+											<td></td>
+										<% } %>
+									</c:if>
 									<c:choose>
 										<c:when test="${!estHorizontal}">
-											<tr>
-											<% for(int i = 1 ; i < nbCase; i++) { %>
-												<td></td>
-											<% } %>
-										</c:when>
-									</c:choose>
-									<td>
-										<c:choose>
-											<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_virage_gauche_1.jpg"/></c:when>
-											<c:when test="${cellule.limitationVitesse == 2 }"><img src="resources/case_virage_gauche_2.jpg"/></c:when>
-											<c:when test="${cellule.limitationVitesse == 3 }"><img src="resources/case_virage_gauche_3.jpg"/></c:when>
-											<c:when test="${cellule.limitationVitesse == 4 }"><img src="resources/case_virage_gauche_4.jpg"/></c:when>
-											<c:when test="${cellule.limitationVitesse == 5 }"><img src="resources/case_virage_gauche_5.jpg"/></c:when>
-										</c:choose>
-									</td>
-									<c:choose>
-										<c:when test="${!estHorizontal}">
-											<% for(int i = 1 ; i < nbCase; i++) { %>
-												<td></td>
-											<% } %>
 											<c:set var="estHorizontal" value="true"></c:set>
 										</c:when>
 										<c:when test="${estHorizontal}">

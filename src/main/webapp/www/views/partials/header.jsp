@@ -21,7 +21,7 @@
       #plateau #menu a img { margin:0; padding:0; display:inline-block; }
       #plateau #circuit { margin:0; padding:0; }
       #plateau #circuit tr { margin:0; padding:0; height:200px;}
-      #plateau #circuit tr td {margin:0; padding:0; width:200px; height:200px; }
+      #plateau #circuit tr td {margin:0; padding:0; width:200px; height:200px; border:1px white solid;}
       
       .sidebar-nav {
         padding: 9px 0;
