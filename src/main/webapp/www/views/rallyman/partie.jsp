@@ -223,7 +223,6 @@
 								
 								<c:if test="${cellule.type == 'virage'}">
 									<c:if test="${estHorizontal}">
-									<% nbCase++; %>
 										<td>
 											<c:choose>
 												<c:when test="${cellule.limitationVitesse == 1 }"><img src="resources/case_virage_gauche_1.jpg"/></c:when>
