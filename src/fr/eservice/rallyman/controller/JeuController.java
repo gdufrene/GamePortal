@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.eservice.portal.score.ScoreBean;
+import fr.eservice.portal.score.ScoreService;
 import fr.eservice.rallyman.model.Constantes;
 import fr.eservice.rallyman.model.entite.Carte;
 import fr.eservice.rallyman.model.entite.Cellule;
@@ -36,7 +39,14 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	protected Joueur joueurCourant;
 	
 	static int cpt = 1; // à supprimer plus tard
+
+	protected ScoreService scoreService;
 	
+	@Autowired
+	public void setScoreService(ScoreService scoreService) {
+		this.scoreService = scoreService;
+	}
+
 	public void demarrerJeu() {
 		System.out.println("[DEMARRAGE DU JEU]");
 		
@@ -123,16 +133,17 @@ public class JeuController /* implements interface pour pattern strategy */ {
 		if(joueur.getAvancement() == -1) {
 			desDisponibles = des.getListeDesDisponibles(0, null, null);
 		} else if (! joueur.isaFiniLaSpeciale()) {
-			
 			Cellule celluleSuivante = null;
 			try {
 				celluleSuivante = carte.getListeCellules().get(joueur.getAvancement()+1);				
 			} catch (final IndexOutOfBoundsException e){
 				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
 			}
-			
+			System.out.println("vit cour : "+joueur.getVoiture().getVitesseCourante());
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
 		}
+		System.out.println("des dispo : "+desDisponibles.size()+" "+desDisponibles.toString());
+		
 		
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
 			passerJoueurSuivant(joueur);
@@ -166,6 +177,21 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				
 				// on trie les joueurs par score
 				Collections.sort(listeJoueurs);
+				
+				List<ScoreBean> scores = new ArrayList<ScoreBean>();
+				
+				int placement = 1;
+				for(final Joueur joueur : listeJoueurs) {
+					ScoreBean score = new ScoreBean();
+					score.setIdentifiantUtilisateur(joueur.getIdentifiant());
+					score.setPlacement(placement++);
+					score.setScore(joueur.getTemps());
+					scores.add(score);
+				}
+				
+				// on sauvegarde les scores
+				scoreService.enregistrerScores(1, 1, scores);
+				
 			// sinon on démarre la nouvelle spéciale
 			} else {
 				initialiserNouvelleSpeciale();
@@ -202,20 +228,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 	 * @param joueur
 	 */
 	private void calculerNouvelleVitesse(String deJoue, Joueur joueur) {
-		int nouvelleVitesse = -1;
-		if(deJoue.equals(Constantes.DE_VITESSE1)) {
-			nouvelleVitesse = 1;
-		} else if(deJoue.equals(Constantes.DE_VITESSE2)) {
-			nouvelleVitesse = 2;
-		} else if(deJoue.equals(Constantes.DE_VITESSE3)) {
-			nouvelleVitesse = 3;
-		} else if(deJoue.equals(Constantes.DE_VITESSE4)) {
-			nouvelleVitesse = 4;
-		} else if(deJoue.equals(Constantes.DE_VITESSE5)) {
-			nouvelleVitesse = 5;
-		}
-		
-		des.supprimerDe(deJoue);
+		int nouvelleVitesse = des.getListDes().get(deJoue).getValeur();
+		des.listDes.get(deJoue).setUtilise(true);
 		
 		if(nouvelleVitesse != -1) {
 			joueur.getVoiture().setVitesseCourante(nouvelleVitesse);
@@ -244,9 +258,6 @@ public class JeuController /* implements interface pour pattern strategy */ {
 				index++;
 			}
 			joueurCourant = listeJoueurs.get(index);
-			
-			System.out.println("Le nouveau joueur ( " + joueurCourant.getIdentifiant() + ") a fini la spé ? " + joueurCourant.isaFiniLaSpeciale());
-			
 		} while (joueurCourant.isaFiniLaSpeciale() &&  ++parcours != listeJoueurs.size());
 		
 		des.reinitialiserDes();
