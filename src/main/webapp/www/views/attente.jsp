@@ -29,7 +29,8 @@
                                 <h1><%= request.getParameter("jeu") %></h1>
                                 <p></p>
                                 <% if (request.getParameter("ademarre").equals("1")) { %>
-                                	<p><a href="/<%= request.getParameter("jeu") %>" class="btn btn-primary btn-large">Commencer la partie &raquo;</a></p>
+                                	<p><a onclick="javascript:commencer();" class="btn btn-primary btn-large">Commencer la partie &raquo;</a></p>
+                                	<!-- <p><a href="/<%= request.getParameter("jeu") %>" class="btn btn-primary btn-large">Commencer la partie &raquo;</a></p> -->
   								<% } %>
                         </div>
                         <h1>Liste des joueurs en attente</h1>
@@ -77,20 +78,33 @@
 
 check_attente();
 setInterval('check_attente()', 5000);
-
+vademarre = false;
 
 //Lorsque l'utilisateur quitte la page!
 window.onbeforeunload = function(){
-	$.ajax({
-		url: "/joueur_quit?jeu=<%=request.getParameter("jeu")%>&nom=<%=request.getParameter("nom")%>",
-		data: "",
-		success: function(data){},
-		dataType: "text"
-	});
-	alert('Vous avez quitter la partie');
+	if (!vademarre) {
+		$.ajax({
+			url: "/joueur_quit?jeu=<%=request.getParameter("jeu")%>&nom=<%=request.getParameter("nom")%>",
+			data: "",
+			success: function(data){},
+			dataType: "text"
+		});
+		alert('Vous avez quitter la partie');
+	}
 };
 
 function check_attente() {
+	$.ajax({
+		url: "/vacommencer",
+		type : 'GET',
+		data: "jeu=<%=request.getParameter("jeu")%>",
+		success: function(data){
+			if (data == "1") {
+				commencer();
+			}
+		},
+		dataType: "text"
+	});
 	$.ajax({
 		url: "/check_attente",
 		type : 'GET',
@@ -106,6 +120,32 @@ function check_attente() {
 		dataType: "text"
 	});
 }
+
+function commencer() {
+	vademarre = true;
+	$.ajax({
+		url: "/check_attente",
+		type : 'GET',
+		data: "jeu=<%=request.getParameter("jeu")%>",
+		success: function(data){
+			$.ajax({
+				url: "/commencer",
+				type : 'GET',
+				data: "jeu=<%=request.getParameter("jeu")%>",
+				success: function(data2) {
+					console.log(data2);
+					window.location =  "/<%= request.getParameter("jeu") %>?name=<%= request.getParameter("nom") %>&others=" + data;
+				},
+				dataType: "text"
+			});
+			//window.location =  "/<%= request.getParameter("jeu") %>?name=<%= request.getParameter("nom") %>&others=" + data;
+		},
+		dataType: "text"
+	});
+	
+}
+
+
 
 </script>
 
