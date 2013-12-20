@@ -122,7 +122,7 @@ public class Des {
 		}
 		
 		// retrait des d��s si limitation de vitesse sur la cellule
-		if(cellule != null) {
+		if(celluleSuivante != null) {
 			System.out.println("@@@ 2 "+celluleSuivante.getLimitationVitesse());
 			switch(celluleSuivante.getLimitationVitesse()) {
 			case 2:
