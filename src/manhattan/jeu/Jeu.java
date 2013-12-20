@@ -38,6 +38,7 @@ public class Jeu {
 	 * @return
 	 */
 	public int nextPlayer(){
+		currentPlayer%=nbJoueurs;
 		return currentPlayer++;
 	}
 	
