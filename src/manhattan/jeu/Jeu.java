@@ -2,6 +2,7 @@ package manhattan.jeu;
 
 import java.util.ArrayList;
 
+import manhattan.cartes.Carte;
 import manhattan.cartes.Pioche;
 import manhattan.plateau.Quartier;
 
@@ -10,6 +11,7 @@ public class Jeu {
 	private ArrayList<Joueur> joueurs = new ArrayList<Joueur>();
 	private int currentPlayer = 1;// TODO
 	private int nbJoueurs = 4;
+	private int tour = 0;
 
 	public Jeu(int nbJoueurs) {
 		for (int i = 0; i < 6; i++) {
@@ -23,13 +25,57 @@ public class Jeu {
 		distribuerCartes();
 	}
 
-	public void start(TourListener tourListener) {
-		for (int tour = 0; tour < 6; tour++) {
-			tourListener.nextTurn(tour);
-			new Tour(tourListener, nbJoueurs, joueurs, quartiers);
-		}
+	/**
+	 * Renvoie le numéro du tour qui débute
+	 * @return
+	 */
+	public int nextTurn(){
+		return tour++;
 	}
-
+	
+	/**
+	 * Renvoie le numéro du joueur qui débute son tour
+	 * @return
+	 */
+	public int nextPlayer(){
+		return currentPlayer++;
+	}
+	
+	/**
+	 * Liste les pièces en stock pour le joueur "joueur"
+	 * @return ArrayList<Piece>
+	 */
+	public ArrayList<Piece> getElementsPourLeTour(int joueur){
+		return joueurs.get(joueur).listerPiecesDispo();
+	}
+	
+	/**
+	 * Liste les cartes en main pour le joueur "joueur"
+	 * @return ArrayList<Carte>
+	 */
+	public ArrayList<Carte> getCartesPourLeTour(int joueur){
+		return joueurs.get(joueur).listerCartesEnMain();
+	}
+	
+	/**
+	 * Renvoie la liste des quartiers
+	 * @return
+	 */
+	public ArrayList<Quartier> getQuartiers(){
+		return quartiers;
+	}
+	
+	/**
+	 * Joue une pièce dans un quartier en fonction d'une carte
+	 * @param joueur
+	 * @param quartier
+	 * @param carte
+	 * @param piece
+	 */
+	public void jouerCartePiece(int joueur, Quartier quartier, Carte carte, Piece piece){
+		Tour.jouer(joueurs, joueur, quartier, piece, carte);
+	}
+	
 	/**
 	 * Détermine le nombre de joueurs
 	 * 
