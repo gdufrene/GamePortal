@@ -1,10 +1,12 @@
 GamePortal
 ==========
   
-# Installation / lancement #  
+# Installation et lancement #  
   
 Afin de faire tourner l'application à 100%, il est nécessaire d'installer le gestionnaire de base de données H2 [voir ici](http://www.h2database.com/html/main.html).  
-La base de données est disponible dans le répertoire racine de ce projet (test.h2.db).  
+La base de données est disponible dans le répertoire racine de ce projet (test.h2.db). 
+Dans le fichier de configuration (WebConfig.java), on spécifie le driver. L'URL est "jdbc:h2:~/test", cela signifie que H2 va rechercher le fichier test.h2.db dans le répertoire 
+utilisateur (user home directory).  
   
 Pour compiler le projet : mvn compile  
 Pour déployer le projet : mvn jetty:start  
