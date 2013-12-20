@@ -16,4 +16,9 @@ public class Carte {
 	public int y() {
 		return this.y;
 	}
+	
+	@Override
+	public String toString() {
+		return x+""+y;
+	}
 }
