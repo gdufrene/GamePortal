@@ -21,6 +21,8 @@ public class Joueur implements Serializable, Comparable<Joueur> {
 	
 	protected boolean aFiniLaSpeciale;
 	
+	protected boolean estJoueurCourant;
+	
 	public Joueur() {
 		super();
 		avancement = -1;
@@ -28,6 +30,7 @@ public class Joueur implements Serializable, Comparable<Joueur> {
 		voiture = new Voiture();
 		voiture.setVitesseCourante(0);
 		aFiniLaSpeciale = false;
+		estJoueurCourant = false;
 	}
 
 	public int getIdentifiant() {
@@ -70,6 +73,14 @@ public class Joueur implements Serializable, Comparable<Joueur> {
 		this.aFiniLaSpeciale = aFiniLaSpeciale;
 	}
 
+	public boolean getEstJoueurCourant(){
+		return this.estJoueurCourant;
+	}
+	
+	public void setEstJoueurCourant(boolean estCourant){
+		this.estJoueurCourant = estCourant;
+	}
+	
 	/** {@inheritDoc} */
 	public int compareTo(Joueur pJoueur) {
 		return (this.getTemps() < pJoueur.getTemps() ? -1 : (this.getTemps() > pJoueur.getTemps() ? 1 : 0 ));

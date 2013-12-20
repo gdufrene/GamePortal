@@ -5,7 +5,7 @@ import java.util.List;
 import fr.eservice.portal.model.entite.Jeu;
 
 /**
- * Interface façade qui permet de gerer l'entité JEU.
+ * Interface facade qui permet de gerer l'entite JEU.
  * 
  * @author nath
  */
@@ -15,7 +15,7 @@ public interface JeuDao {
      * Cette methode permet de recuperer la liste de tous les jeux disponibles
      * sur le portail.
      * 
-     * @return la liste de tous les jeux disponibles en base de données
+     * @return la liste de tous les jeux disponibles en base de donnees
      */
     List<Jeu> listerJeu();
 
