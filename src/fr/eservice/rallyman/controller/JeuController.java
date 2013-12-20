@@ -139,11 +139,8 @@ public class JeuController /* implements interface pour pattern strategy */ {
 			} catch (final IndexOutOfBoundsException e){
 				// l'utilisateur est à la dernière cellule, pas de cellule suivante !
 			}
-			System.out.println("vit cour : "+joueur.getVoiture().getVitesseCourante());
 			desDisponibles = des.getListeDesDisponibles(joueur.getVoiture().getVitesseCourante(), carte.getListeCellules().get(joueur.getAvancement()), celluleSuivante);
 		}
-		System.out.println("des dispo : "+desDisponibles.size()+" "+desDisponibles.toString());
-		
 		
 		if(joueur.isaFiniLaSpeciale() || desDisponibles == null || desDisponibles.isEmpty()) {
 			passerJoueurSuivant(joueur);
