@@ -3,7 +3,6 @@
 <%@page import="manhattan.jeu.Piece"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="manhattan.plateau.Quartier"%>
-<%@page import="manhattan.jeu.TourListener"%>
 <%@page import="manhattan.jeu.Jeu"%>
 <%@page import="manhattan.jeu.JoueurProvider"%>
 <%@page import="manhattan.*"%>
